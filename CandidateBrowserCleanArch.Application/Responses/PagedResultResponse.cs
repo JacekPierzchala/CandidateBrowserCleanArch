@@ -4,9 +4,9 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace CandidateBrowserCleanArch.Application.Responses;
+namespace CandidateBrowserCleanArch.Application;
 
-public class PagedResultResponse<T> : BaseResponse
+public class PagedResultResponse<T> 
 {
     public int TotalCount { get; set; }
     public int PageNumber { get; set; }

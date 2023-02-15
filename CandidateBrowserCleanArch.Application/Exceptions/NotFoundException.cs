@@ -6,7 +6,11 @@ using System.Threading.Tasks;
 
 namespace CandidateBrowserCleanArch.Application;
 
-public class ServiceReponse<T>:BaseResponse
+public class NotFoundException : ApplicationException
 {
-    public T? Data { get; set; }
+    public NotFoundException(string name, object key) :
+        base($"{name} ({key}) was not found")
+    {
+
+    }
 }

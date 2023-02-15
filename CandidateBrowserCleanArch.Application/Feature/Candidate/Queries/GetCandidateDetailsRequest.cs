@@ -1,15 +1,8 @@
 ﻿using AutoMapper;
-using CandidateBrowserCleanArch.Application.Contracts.Persistence;
-using CandidateBrowserCleanArch.Application.DTOs.Candidate;
-using CandidateBrowserCleanArch.Application.Responses;
+using CandidateBrowserCleanArch.Domain;
 using MediatR;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
-namespace CandidateBrowserCleanArch.Application.Feature.Candidate.Queries;
+namespace CandidateBrowserCleanArch.Application;
 
 public class GetCandidateDetailsRequest:IRequest<ServiceReponse<CandidateDetailsDto>>
 {
@@ -29,16 +22,14 @@ public class GetCandidateDetailsRequestHandler : IRequestHandler<GetCandidateDet
     public async Task<ServiceReponse<CandidateDetailsDto>> Handle(GetCandidateDetailsRequest request, CancellationToken cancellationToken)
     {
         var response = new ServiceReponse<CandidateDetailsDto>();
-        try
-        {
+
             var candidate = await _candidateRepository.GetCandidateWithDetailsAsync(request.CandidateId);
+            if(candidate == null) 
+            {
+                throw    new NotFoundException(nameof(Candidate), request.CandidateId);               
+            }
             response.Data=_mapper.Map<CandidateDetailsDto>(candidate);
             response.Success = true;
-        }
-        catch (Exception ex)
-        {
-            response.Message=ex.Message;
-        }
 
         return response;
     }

@@ -1,11 +1,7 @@
-﻿using CandidateBrowserCleanArch.Application.Contracts.Persistence;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using CandidateBrowserCleanArch.Application;
+using Microsoft.EntityFrameworkCore;
 
-namespace CandidateBrowserCleanArch.Persistence.Repositories;
+namespace CandidateBrowserCleanArch.Persistence;
 
 public class GenericRepository<T> : IGenericRepository<T>
 {
@@ -17,7 +13,8 @@ public class GenericRepository<T> : IGenericRepository<T>
     }
     public async Task<T> AddAsync(T entity)
     {
-        throw new NotImplementedException();
+        _dbContext.Add(entity);
+        return entity;
     }
 
     public async Task<bool> DeleteAsync(T entity)
@@ -42,6 +39,7 @@ public class GenericRepository<T> : IGenericRepository<T>
 
     public async Task<T> UpdateAsync(T entity)
     {
-        throw new NotImplementedException();
+        _dbContext.Entry(entity).State = EntityState.Modified;
+        return entity;
     }
 }

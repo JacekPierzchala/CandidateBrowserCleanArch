@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace CandidateBrowserCleanArch.Application.DTOs;
+namespace CandidateBrowserCleanArch.Application;
 
 public class CandidateQueryParameters:QueryParameters
 {

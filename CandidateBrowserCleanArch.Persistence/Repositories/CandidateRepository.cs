@@ -1,15 +1,8 @@
-﻿using CandidateBrowserCleanArch.Application.Contracts.Persistence;
-using CandidateBrowserCleanArch.Application.DTOs;
-using CandidateBrowserCleanArch.Application.Responses;
+﻿using CandidateBrowserCleanArch.Application;
 using CandidateBrowserCleanArch.Domain;
 using Microsoft.EntityFrameworkCore;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
-namespace CandidateBrowserCleanArch.Persistence.Repositories;
+namespace CandidateBrowserCleanArch.Persistence;
 
 public class CandidateRepository : GenericRepository<Candidate>, ICandidateRepository
 {
@@ -21,7 +14,7 @@ public class CandidateRepository : GenericRepository<Candidate>, ICandidateRepos
         var totalItems = await _dbContext
             .Candidates
             .Where(c =>
-                   !c.Deleted &&
+            !c.Deleted &&
                    (string.IsNullOrEmpty(queryParameters.FirstName) || c.FirstName.ToLower().Contains(queryParameters.FirstName))
                 && (string.IsNullOrEmpty(queryParameters.LastName) || c.LastName.ToLower().Contains(queryParameters.LastName))
             )
@@ -65,7 +58,6 @@ public class CandidateRepository : GenericRepository<Candidate>, ICandidateRepos
         }
 
         return candidate;
-
 
     }
 }

@@ -1,13 +1,6 @@
-﻿using CandidateBrowserCleanArch.Application.DTOs;
-using CandidateBrowserCleanArch.Application.Responses;
-using CandidateBrowserCleanArch.Domain;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using CandidateBrowserCleanArch.Domain;
 
-namespace CandidateBrowserCleanArch.Application.Contracts.Persistence;
+namespace CandidateBrowserCleanArch.Application;
 
 public interface ICandidateRepository: IGenericRepository<Candidate>
 {

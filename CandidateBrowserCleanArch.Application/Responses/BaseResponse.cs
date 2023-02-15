@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace CandidateBrowserCleanArch.Application.Responses;
+namespace CandidateBrowserCleanArch.Application;
 
 public abstract class BaseResponse
 {
