@@ -4,12 +4,12 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace CandidateBrowserCleanArch.Application.Contracts.Persistence;
+namespace CandidateBrowserCleanArch.Application;
 
-internal interface IUnitOfWork:IDisposable
+public interface IUnitOfWork:IDisposable
 {
     ICandidateRepository CandidateRepository { get; }
     ICompanyRepository CompanyRepository { get; }
     IProjectRepository  ProjectRepository { get; }
-    Task<bool> Save();
+    Task<bool> SaveAsync();
 }

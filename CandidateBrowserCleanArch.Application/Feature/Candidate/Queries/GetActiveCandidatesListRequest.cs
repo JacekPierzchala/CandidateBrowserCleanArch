@@ -1,16 +1,7 @@
 ﻿using AutoMapper;
-using CandidateBrowserCleanArch.Application.Contracts.Persistence;
-using CandidateBrowserCleanArch.Application.DTOs;
-using CandidateBrowserCleanArch.Application.DTOs.Candidate;
-using CandidateBrowserCleanArch.Application.Responses;
 using MediatR;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
-namespace CandidateBrowserCleanArch.Application.Feature.Candidate.Queries;
+namespace CandidateBrowserCleanArch.Application;
 
 public class GetActiveCandidatesListRequest: IRequest<PagedResultResponse<CandidateListDto>>
 {
@@ -31,24 +22,22 @@ public class GetActiveCandidatesListRequestHandler : IRequestHandler<GetActiveCa
     public async Task<PagedResultResponse<CandidateListDto>> Handle(GetActiveCandidatesListRequest request, CancellationToken cancellationToken)
     {
         var response = new PagedResultResponse<CandidateListDto>();
-        try
-        {
+        //try
+        //{
             var result = await _candidateRepository.GetAllActiveCandidatesWithDetailsAsync(request.QueryParameters);
             var candidatesToReturn = _mapper.Map<List<CandidateListDto>>(result.Items);
             
             response.Items = candidatesToReturn;
             response.PageNumber = result.PageNumber;
             response.PageSize = result.PageSize;
-            response.TotalCount = result.TotalCount;
-            response.Success = true;
+            response.TotalCount = result.TotalCount;        
             return response;
             
-        }
-        catch (Exception ex)
-        {
-            response.Message = ex.Message;
-            return response;
-        }     
+        //}
+        //catch (Exception e)
+        //{
+        //    throw new Exception(e.Message);
+        //}     
    
 
     }

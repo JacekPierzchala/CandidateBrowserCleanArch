@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace CandidateBrowserCleanArch.Application.Contracts.Persistence;
+namespace CandidateBrowserCleanArch.Application;
 
 public interface IGenericRepository<T>
 {

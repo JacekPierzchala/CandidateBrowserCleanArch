@@ -1,3 +1,5 @@
+
+using CandidateBrowserCleanArch.API;
 using CandidateBrowserCleanArch.Application;
 using CandidateBrowserCleanArch.Persistence;
 
@@ -12,7 +14,7 @@ builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
 var app = builder.Build();
-
+app.UseMiddleware<ExceptionMiddleware>();
 // Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment())
 {

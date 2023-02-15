@@ -6,7 +6,10 @@ using System.Threading.Tasks;
 
 namespace CandidateBrowserCleanArch.Application;
 
-public class ServiceReponse<T>:BaseResponse
+public class BadRequestException: ApplicationException
 {
-    public T? Data { get; set; }
+    public BadRequestException(string message) : base(message)
+    {
+
+    }
 }

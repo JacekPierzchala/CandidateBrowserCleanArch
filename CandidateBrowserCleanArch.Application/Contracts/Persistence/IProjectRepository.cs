@@ -5,9 +5,9 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace CandidateBrowserCleanArch.Application.Contracts.Persistence;
+namespace CandidateBrowserCleanArch.Application;
 
-internal interface IProjectRepository:IGenericRepository<Project>
+public interface IProjectRepository:IGenericRepository<Project>
 {
     Task<IEnumerable<Project>> GetAllActiveProjectAsync();
 }

@@ -1,11 +1,4 @@
-﻿using CandidateBrowserCleanArch.Domain.Common;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace CandidateBrowserCleanArch.Domain;
+﻿namespace CandidateBrowserCleanArch.Domain;
 
 public class CandidateProject:BaseEntity
 {

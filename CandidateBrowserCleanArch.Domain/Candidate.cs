@@ -1,11 +1,4 @@
-﻿using CandidateBrowserCleanArch.Domain.Common;
-using System;
-using System.Collections.Generic;
-using System.ComponentModel.DataAnnotations;
-using System.ComponentModel.DataAnnotations.Schema;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System.ComponentModel.DataAnnotations.Schema;
 
 namespace CandidateBrowserCleanArch.Domain;
 
@@ -20,7 +13,7 @@ public class Candidate:BaseEntity
     public DateTime DateOfBirth { get; set; }
 
     [Column(TypeName = "nvarchar(MAX)")]
-    public string? Desctription { get; set; }
+    public string? Description { get; set; }
 
     [Column(TypeName = "varchar(50)")]
     public string? Email { get; set; }

@@ -1,17 +1,7 @@
 ﻿using AutoMapper;
-using CandidateBrowserCleanArch.Application.DTOs.Candidate;
-using CandidateBrowserCleanArch.Application.DTOs.CandidateCompany;
-using CandidateBrowserCleanArch.Application.DTOs.CandidateProject;
-using CandidateBrowserCleanArch.Application.DTOs.Company;
-using CandidateBrowserCleanArch.Application.DTOs.Project;
 using CandidateBrowserCleanArch.Domain;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
-namespace CandidateBrowserCleanArch.Application.Profiles;
+namespace CandidateBrowserCleanArch.Application;
 
 internal class MappingProfile : Profile
 {
@@ -37,6 +27,8 @@ internal class MappingProfile : Profile
 
 
         CreateMap<Candidate, CandidateDetailsDto>()
+            .ReverseMap();
+        CreateMap<Candidate, CreateCandidateDto>()
             .ReverseMap();
     }
 }

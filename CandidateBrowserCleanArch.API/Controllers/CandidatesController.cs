@@ -1,7 +1,4 @@
-﻿using CandidateBrowserCleanArch.Application.DTOs;
-using CandidateBrowserCleanArch.Application.DTOs.Candidate;
-using CandidateBrowserCleanArch.Application.Feature.Candidate.Queries;
-using CandidateBrowserCleanArch.Application.Responses;
+﻿using CandidateBrowserCleanArch.Application;
 using MediatR;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
@@ -24,40 +21,29 @@ namespace CandidateBrowserCleanArch.API.Controllers
         [HttpGet]
         [ProducesResponseType(200)]
         [ProducesResponseType(500)]
-       
         public async Task<ActionResult<PagedResultResponse<CandidateListDto>>> GetAllCandidates([FromQuery] CandidateQueryParameters queryParameters)
         {
-            var response = await _mediator.Send(new GetActiveCandidatesListRequest { QueryParameters=queryParameters });
-            if(response.Success)
-            {
-                return Ok(response);
-            }
-            else
-            {
-                _logger.LogError(response.Message);
-                return StatusCode(500);
-            }
+            var response = await _mediator.Send(new GetActiveCandidatesListRequest { QueryParameters = queryParameters });
+            return Ok(response);
         }
         [HttpGet("{id}")]
         [ProducesResponseType(200)]
         [ProducesResponseType(500)]
         [ProducesResponseType(404)]
-        public async Task<ActionResult<ServiceReponse<CandidateDetailsDto>>>GetCandidateDetails(int id)
+        public async Task<ActionResult<ServiceReponse<CandidateDetailsDto>>> GetCandidateDetails(int id)
         {
             var response = await _mediator.Send(new GetCandidateDetailsRequest { CandidateId = id });
-            if(response.Data!=null) 
-            {
-                return Ok(response);
-            }
-            else if(response.Data == null && response.Success)
-            {
-                return NotFound();
-            }
-            else
-            {
-                _logger.LogError(response.Message);
-                return StatusCode(500);
-            }
+            return Ok(response);         
+        }
+
+        [HttpPost]
+        [ProducesResponseType(200)]
+        [ProducesResponseType(500)]
+        [ProducesResponseType(400)]
+        public async Task<ActionResult<ServiceReponse<CandidateDetailsDto>>> CreateCandidate([FromBody] CreateCandidateDto createCandidate)
+        {
+            var response = await _mediator.Send(new AddCandidateCommand { CreateCandidateDto=createCandidate });
+            return Ok(response);
         }
     }
 }

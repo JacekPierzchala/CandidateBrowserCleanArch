@@ -5,9 +5,9 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace CandidateBrowserCleanArch.Application.Contracts.Persistence;
+namespace CandidateBrowserCleanArch.Application;
 
-internal interface ICompanyRepository:IGenericRepository<Company>
+public interface ICompanyRepository:IGenericRepository<Company>
 {
     Task<IEnumerable<Company>> GetAllActiveCompaniesAsync();
 }

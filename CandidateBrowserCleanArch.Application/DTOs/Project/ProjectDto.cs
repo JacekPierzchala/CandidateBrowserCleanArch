@@ -1,14 +1,12 @@
-﻿using CandidateBrowserCleanArch.Application.DTOs.Common;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace CandidateBrowserCleanArch.Application.DTOs.Project
+namespace CandidateBrowserCleanArch.Application;
+
+public class ProjectDto:BaseDto
 {
-    public class ProjectDto:BaseDto
-    {
-        public string? ProjectName { get; set; }
-    }
+    public string? ProjectName { get; set; }
 }

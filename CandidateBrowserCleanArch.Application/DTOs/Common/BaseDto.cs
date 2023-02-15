@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace CandidateBrowserCleanArch.Application.DTOs.Common;
+namespace CandidateBrowserCleanArch.Application;
 
 public abstract class BaseDto
 {

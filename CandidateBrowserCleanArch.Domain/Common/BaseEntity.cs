@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace CandidateBrowserCleanArch.Domain.Common;
+namespace CandidateBrowserCleanArch.Domain;
 
 public abstract class BaseEntity
 {

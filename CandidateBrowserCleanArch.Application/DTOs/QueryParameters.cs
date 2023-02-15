@@ -4,17 +4,16 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace CandidateBrowserCleanArch.Application.DTOs
-{
-    public class QueryParameters
-    {
-        private int _pageSize = 5;
+namespace CandidateBrowserCleanArch.Application;
 
-        public int PageNumber { get; set; } = 1;
-        public int PageSize
-        {
-            get => _pageSize;
-            set { _pageSize = value; }
-        }
+public class QueryParameters
+{
+    private int _pageSize = 5;
+
+    public int PageNumber { get; set; } = 1;
+    public int PageSize
+    {
+        get => _pageSize;
+        set { _pageSize = value; }
     }
 }
