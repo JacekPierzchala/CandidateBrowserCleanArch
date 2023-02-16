@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace CandidateBrowserCleanArch.Application;
 
-public class CreateCandidateDto: ICandidateDto
+public class CandidateCreateDto: ICandidateDto
 {
     public string? FirstName { get; set; }
     public string? LastName { get; set; }

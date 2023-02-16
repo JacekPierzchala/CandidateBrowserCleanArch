@@ -10,7 +10,7 @@ public class PagedResultResponse<T>
 {
     public int TotalCount { get; set; }
     public int PageNumber { get; set; }
-    public double TotalPages => TotalCount == 0 ? 1 : Math.Ceiling((double)(TotalCount / PageSize));
+    public double TotalPages => TotalCount == 0 ? 1 : Math.Ceiling((double)(TotalCount / (double)PageSize));
     public int PageSize { get; set; }
-    public IEnumerable<T> Items { get; set; }
+    public IEnumerable<T?> Items { get; set; }
 }

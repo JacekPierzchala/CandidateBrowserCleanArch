@@ -28,7 +28,9 @@ internal class MappingProfile : Profile
 
         CreateMap<Candidate, CandidateDetailsDto>()
             .ReverseMap();
-        CreateMap<Candidate, CreateCandidateDto>()
+        CreateMap<Candidate, CandidateCreateDto>()
+            .ReverseMap();
+        CreateMap<Candidate, CandidateUpdateDto>()
             .ReverseMap();
     }
 }

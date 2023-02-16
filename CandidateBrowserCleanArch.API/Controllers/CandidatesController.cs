@@ -40,9 +40,20 @@ namespace CandidateBrowserCleanArch.API.Controllers
         [ProducesResponseType(200)]
         [ProducesResponseType(500)]
         [ProducesResponseType(400)]
-        public async Task<ActionResult<ServiceReponse<CandidateDetailsDto>>> CreateCandidate([FromBody] CreateCandidateDto createCandidate)
+        public async Task<ActionResult<ServiceReponse<CandidateDetailsDto>>> CreateCandidate([FromBody] CandidateCreateDto createCandidate)
         {
             var response = await _mediator.Send(new AddCandidateCommand { CreateCandidateDto=createCandidate });
+            return Ok(response);
+        }
+
+        [HttpPut("{id}")]
+        [ProducesResponseType(200)]
+        [ProducesResponseType(500)]
+        [ProducesResponseType(400)]
+        [ProducesResponseType(404)]
+        public async Task<ActionResult<ServiceReponse<CandidateDetailsDto>>> UpdateCandidate(int id,[FromBody] CandidateUpdateDto candidateUpdate)
+        {
+            var response = await _mediator.Send(new UpdateCandidateCommand { CandidateUpdate = candidateUpdate, Id=id });
             return Ok(response);
         }
     }
