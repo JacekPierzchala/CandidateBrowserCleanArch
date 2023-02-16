@@ -9,6 +9,12 @@ public class CandidateRepository : GenericRepository<Candidate>, ICandidateRepos
     public CandidateRepository(CandidatesBrowserDbContext dbContext):
         base(dbContext){}
 
+    public async Task DeleteCandidateAsync(int id)
+    {
+        var candidate =await GetAsync(id);
+        candidate.Deleted= true;
+    }
+
     public async Task<PagedResultResponse<Candidate>> GetAllActiveCandidatesWithDetailsAsync(CandidateQueryParameters queryParameters)
     {
         var totalItems = await _dbContext
@@ -27,9 +33,9 @@ public class CandidateRepository : GenericRepository<Candidate>, ICandidateRepos
             .ToListAsync();
 
         var items =  totalItems
-                  .Skip(queryParameters.PageSize * (queryParameters.PageNumber - 1))
-                  .Take(queryParameters.PageSize)
-                  .ToList();
+                      .Skip(queryParameters.PageSize * (queryParameters.PageNumber - 1))
+                      .Take(queryParameters.PageSize)
+                      .ToList();
 
 
         return new PagedResultResponse<Candidate>

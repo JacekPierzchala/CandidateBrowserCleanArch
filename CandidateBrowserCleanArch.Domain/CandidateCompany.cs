@@ -1,4 +1,6 @@
-﻿namespace CandidateBrowserCleanArch.Domain;
+﻿using System.ComponentModel.DataAnnotations.Schema;
+
+namespace CandidateBrowserCleanArch.Domain;
 
 public class CandidateCompany : BaseEntity
 {
@@ -7,6 +9,8 @@ public class CandidateCompany : BaseEntity
     public int CandidateId { get; set; }
     public Candidate Candidate { get; set; }
 
+    [Column(TypeName = "nvarchar(250)")]
+    public string? Position { get; set; }
 
     public DateTime DateStart { get; set; }
 
