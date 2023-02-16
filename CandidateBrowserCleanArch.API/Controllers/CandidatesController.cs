@@ -1,4 +1,5 @@
 ﻿using CandidateBrowserCleanArch.Application;
+using CandidateBrowserCleanArch.Applicationl;
 using MediatR;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
@@ -54,6 +55,16 @@ namespace CandidateBrowserCleanArch.API.Controllers
         public async Task<ActionResult<ServiceReponse<CandidateDetailsDto>>> UpdateCandidate(int id,[FromBody] CandidateUpdateDto candidateUpdate)
         {
             var response = await _mediator.Send(new UpdateCandidateCommand { CandidateUpdate = candidateUpdate, Id=id });
+            return Ok(response);
+        }
+        [HttpDelete("{id}")]
+        [ProducesResponseType(200)]
+        [ProducesResponseType(500)]
+        [ProducesResponseType(400)]
+        [ProducesResponseType(404)]
+        public async Task<ActionResult<BaseResponse>> DeleteCandidate(int id)
+        {
+            var response = await _mediator.Send(new DeleteCandidateCommand { CandidateId = id });
             return Ok(response);
         }
     }

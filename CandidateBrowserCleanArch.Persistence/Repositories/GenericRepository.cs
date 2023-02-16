@@ -18,9 +18,9 @@ public class GenericRepository<T> : IGenericRepository<T>
         return entity;
     }
 
-    public async Task<bool> DeleteAsync(T entity)
+    public async Task  DeleteAsync(T entity)
     {
-        throw new NotImplementedException();
+        _dbContext.Set<T>().Remove(entity);
     }
 
     public async Task<bool> Exists(int id)
