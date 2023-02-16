@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace CandidateBrowserCleanArch.Persistence;
 
-public class UnitOfWork : IUnitOfWork
+internal sealed class UnitOfWork : IUnitOfWork
 {
     private readonly CandidatesBrowserDbContext _dbContext;
     private readonly ICandidateRepository _candidateRepository;
