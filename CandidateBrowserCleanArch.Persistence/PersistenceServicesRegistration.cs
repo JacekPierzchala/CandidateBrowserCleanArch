@@ -12,6 +12,7 @@ public static class PersistenceServicesRegistration
     {
         services.AddDbContext<CandidatesBrowserDbContext>(options =>
         options.UseSqlServer(configuration.GetConnectionString("CandidatesBrowserConnString")));
+        services.AddScoped(typeof(IGenericRepository<>), typeof(GenericRepository<>));
         services.AddScoped<ICandidateRepository, CandidateRepository>();
         services.AddScoped<IUnitOfWork, UnitOfWork>();
         return services;

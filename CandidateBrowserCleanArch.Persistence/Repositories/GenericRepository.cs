@@ -4,6 +4,7 @@ using Microsoft.EntityFrameworkCore;
 namespace CandidateBrowserCleanArch.Persistence;
 
 public class GenericRepository<T> : IGenericRepository<T>
+        where T : class
 {
     protected readonly CandidatesBrowserDbContext _dbContext;
 
@@ -24,7 +25,8 @@ public class GenericRepository<T> : IGenericRepository<T>
 
     public async Task<bool> Exists(int id)
     {
-        throw new NotImplementedException();
+        var entity = await GetAsync(id);
+        return entity != null;
     }
 
     public async Task<IEnumerable<T>> GetAllAsync()
@@ -34,7 +36,7 @@ public class GenericRepository<T> : IGenericRepository<T>
 
     public async Task<T> GetAsync(int id)
     {
-        throw new NotImplementedException();
+        return await _dbContext.Set<T>().FindAsync(id);
     }
 
     public async Task<T> UpdateAsync(T entity)

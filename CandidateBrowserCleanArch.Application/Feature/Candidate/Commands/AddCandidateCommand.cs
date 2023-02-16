@@ -11,7 +11,7 @@ namespace CandidateBrowserCleanArch.Application;
 
 public class AddCandidateCommand:IRequest<ServiceReponse<CandidateDetailsDto>>
 {
-    public CreateCandidateDto CreateCandidateDto { get; set; }
+    public CandidateCreateDto CreateCandidateDto { get; set; }
 }
 public class AddCandidateCommandHandler : IRequestHandler<AddCandidateCommand, ServiceReponse<CandidateDetailsDto>>
 {
@@ -19,7 +19,10 @@ public class AddCandidateCommandHandler : IRequestHandler<AddCandidateCommand, S
     private readonly IUnitOfWork _unitOfWork;
     private readonly ICandidateRepository _candidateRepository;
 
-    public AddCandidateCommandHandler(IMapper mapper, IUnitOfWork unitOfWork,ICandidateRepository candidateRepository)
+    public AddCandidateCommandHandler(
+        IMapper mapper, 
+        IUnitOfWork unitOfWork,
+        ICandidateRepository candidateRepository)
     {
         _mapper = mapper;
         _unitOfWork = unitOfWork;

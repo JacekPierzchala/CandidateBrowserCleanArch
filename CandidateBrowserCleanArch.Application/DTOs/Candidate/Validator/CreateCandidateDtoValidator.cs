@@ -7,9 +7,9 @@ using System.Threading.Tasks;
 
 namespace CandidateBrowserCleanArch.Application;
 
-public class CreateCandidateDtoValidator:AbstractValidator<CreateCandidateDto>
+internal class CreateCandidateDtoValidator:AbstractValidator<CandidateCreateDto>
 {
-	public CreateCandidateDtoValidator()
+    internal CreateCandidateDtoValidator()
 	{
 		Include(new BaseCandidateDtoValidator());
 	}
