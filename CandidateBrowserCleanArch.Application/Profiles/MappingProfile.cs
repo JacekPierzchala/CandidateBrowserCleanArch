@@ -3,7 +3,7 @@ using CandidateBrowserCleanArch.Domain;
 
 namespace CandidateBrowserCleanArch.Application;
 
-internal class MappingProfile : Profile
+public class MappingProfile : Profile
 {
     public MappingProfile()
     {

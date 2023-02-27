@@ -43,8 +43,14 @@ public class ExceptionMiddleware
             case ValidationException:
                 handler = new ValidationExceptionHandler();
                 break;
-            case NotFoundException notFound:
+            case NotFoundException:
                 handler = new NotFoundExceptionHandler();
+                break;
+            case AuthorizationException:
+                handler = new AuthorizationExceptionHandler();
+                break;
+            case RegistrationException:
+                handler = new RegistrationExceptionHandler();
                 break;
             default:
                 handler = new InternalServerErrorHandler();
