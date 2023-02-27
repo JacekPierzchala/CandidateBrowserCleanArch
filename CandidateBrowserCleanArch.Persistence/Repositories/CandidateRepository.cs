@@ -19,6 +19,7 @@ public class CandidateRepository : GenericRepository<Candidate>, ICandidateRepos
     {
         var totalItems = await _dbContext
             .Candidates
+            .AsNoTracking()
             .Where(c =>
             !c.Deleted &&
                    (string.IsNullOrEmpty(queryParameters.FirstName) || c.FirstName.ToLower().Contains(queryParameters.FirstName))
