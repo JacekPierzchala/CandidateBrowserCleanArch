@@ -4,6 +4,7 @@
     <TargetFramework>net6.0</TargetFramework>
     <Nullable>enable</Nullable>
     <ImplicitUsings>enable</ImplicitUsings>
+    <UserSecretsId>48ab2a2e-96c0-4017-8b72-a87c58766fd2</UserSecretsId>
   </PropertyGroup>
 
   <ItemGroup>
@@ -17,6 +18,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\CandidateBrowserCleanArch.Application\CandidateBrowserCleanArch.Application.csproj" />
+    <ProjectReference Include="..\CandidateBrowserCleanArch.Identity\CandidateBrowserCleanArch.Identity.csproj" />
     <ProjectReference Include="..\CandidateBrowserCleanArch.Persistence\CandidateBrowserCleanArch.Persistence.csproj" />
   </ItemGroup>
 
