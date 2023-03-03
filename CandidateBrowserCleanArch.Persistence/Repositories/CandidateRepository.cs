@@ -17,8 +17,9 @@ public class CandidateRepository : GenericRepository<Candidate>, ICandidateRepos
 
     public async Task<PagedResultResponse<Candidate>> GetAllActiveCandidatesWithDetailsAsync(CandidateQueryParameters queryParameters)
     {
-        var totalItems = await _dbContext
+        var totalItems = await _dbContext           
             .Candidates
+            .AsSplitQuery()
             .AsNoTracking()
             .Where(c =>
             !c.Deleted &&

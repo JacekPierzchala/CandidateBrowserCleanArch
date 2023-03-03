@@ -39,7 +39,7 @@ internal class CandidatesData
                              CompanyId= 2,
                              Company= new Company
                              {
-                                  Id= 1,
+                                  Id= 2,
                                   CompanyName="Best1"
                              }
                         }
@@ -80,10 +80,10 @@ internal class CandidatesData
                         {
                              Id= 1,
                              CandidateId= 2,
-                             CompanyId= 1,
+                             CompanyId= 5,
                              Company= new Company
                              {
-                                  Id= 1,
+                                  Id= 5,
                                   CompanyName="Test1"
                              }
                         },
@@ -94,7 +94,7 @@ internal class CandidatesData
                              CompanyId= 3,
                              Company= new Company
                              {
-                                  Id= 1,
+                                  Id= 3,
                                   CompanyName="Acme"
                              }
                         }
