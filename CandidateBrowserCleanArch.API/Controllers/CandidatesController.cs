@@ -1,4 +1,5 @@
-﻿using CandidateBrowserCleanArch.Application;
+﻿using CandidateBrowserCleanArch.API.Configurations;
+using CandidateBrowserCleanArch.Application;
 using CandidateBrowserCleanArch.Applicationl;
 using MediatR;
 using Microsoft.AspNetCore.Authorization;
@@ -10,6 +11,7 @@ namespace CandidateBrowserCleanArch.API.Controllers
     [Route("api/[controller]")]
     [ApiController]
     [Authorize]
+    [ApiVersion(ApiVersionNumber.V1_0)]
     public class CandidatesController : ControllerBase
     {
         private readonly IMediator _mediator;
@@ -25,11 +27,15 @@ namespace CandidateBrowserCleanArch.API.Controllers
         [ProducesResponseType(200)]
         [ProducesResponseType(500)]
         [Authorize(Policy = CustomRoleClaims.CandidateRead)]
+
         public async Task<ActionResult<PagedResultResponse<CandidateListDto>>> GetAllCandidates([FromQuery] CandidateQueryParameters queryParameters)
         {
             var response = await _mediator.Send(new GetActiveCandidatesListRequest { QueryParameters = queryParameters });
             return Ok(response);
         }
+
+
+
         [HttpGet("{id}")]
         [ProducesResponseType(200)]
         [ProducesResponseType(500)]
