@@ -13,26 +13,23 @@ namespace CandidateBrowserCleanArch.Applicationl
     {
         public int CandidateId { get; set; }
     }
-    internal sealed class DeleteCandidateCommandHandler : IRequestHandler<DeleteCandidateCommand, BaseResponse>
+    public sealed class DeleteCandidateCommandHandler : IRequestHandler<DeleteCandidateCommand, BaseResponse>
     {
-        private readonly ICandidateRepository _candidateRepository;
         private readonly IUnitOfWork _unitOfWork;
 
-        public DeleteCandidateCommandHandler(ICandidateRepository candidateRepository,
-            IUnitOfWork unitOfWork)
+        public DeleteCandidateCommandHandler(IUnitOfWork unitOfWork)
         {
-            _candidateRepository = candidateRepository;
             _unitOfWork = unitOfWork;
         }
         public async Task<BaseResponse> Handle(DeleteCandidateCommand request, CancellationToken cancellationToken)
         {
             var response = new ServiceReponse<bool>();
-            var candidate = await _candidateRepository.GetAsync(request.CandidateId);
+            var candidate = await _unitOfWork.CandidateRepository.GetAsync(request.CandidateId);
             if (candidate == null)
             {
                 throw new NotFoundException(nameof(Candidate), request.CandidateId);
             }
-            await _candidateRepository.DeleteCandidateAsync(request.CandidateId);
+            await _unitOfWork.CandidateRepository.DeleteCandidateAsync(request.CandidateId);
             
             response.Success=await _unitOfWork.SaveAsync();
             if(!response.Success) 
