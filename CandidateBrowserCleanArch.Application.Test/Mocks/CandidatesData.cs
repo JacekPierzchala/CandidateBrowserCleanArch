@@ -10,7 +10,7 @@ namespace CandidateBrowserCleanArch.Application.Test;
 internal class CandidatesData
 {
    
-    internal static List<Candidate> Candidates = new()
+    internal static IEnumerable<Candidate> Candidates = new List<Candidate>()
     {
 
 
@@ -19,6 +19,8 @@ internal class CandidatesData
                    Deleted= false,
                    Id= 1,
                    FirstName="John",LastName="Doe",
+                   Email = "John.Doe@gmail.com",
+                   DateOfBirth= DateTime.Now,
                    Companies= new List<CandidateCompany>
                    {
                         new CandidateCompany
@@ -182,5 +184,6 @@ internal class CandidatesData
         return response;
 
     }
+
 
 }

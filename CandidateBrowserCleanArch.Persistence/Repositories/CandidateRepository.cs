@@ -19,7 +19,7 @@ public class CandidateRepository : GenericRepository<Candidate>, ICandidateRepos
     {
         var totalItems = await _dbContext           
             .Candidates
-            .AsSplitQuery()
+           // .AsSplitQuery()
             .AsNoTracking()
             .Where(c =>
             !c.Deleted &&

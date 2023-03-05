@@ -17,16 +17,13 @@ public class AddCandidateCommandHandler : IRequestHandler<AddCandidateCommand, S
 {
     private readonly IMapper _mapper;
     private readonly IUnitOfWork _unitOfWork;
-    private readonly ICandidateRepository _candidateRepository;
 
     public AddCandidateCommandHandler(
         IMapper mapper, 
-        IUnitOfWork unitOfWork,
-        ICandidateRepository candidateRepository)
+        IUnitOfWork unitOfWork)
     {
         _mapper = mapper;
         _unitOfWork = unitOfWork;
-        _candidateRepository = candidateRepository;
     }
     public async Task<ServiceReponse<CandidateDetailsDto>> Handle(AddCandidateCommand request, CancellationToken cancellationToken)
     {
@@ -43,7 +40,7 @@ public class AddCandidateCommandHandler : IRequestHandler<AddCandidateCommand, S
         response.Success=await _unitOfWork.SaveAsync();
         if(response.Success)
         {
-            response.Data = _mapper.Map <CandidateDetailsDto>( await _candidateRepository.GetCandidateWithDetailsAsync(candidate.Id));
+            response.Data = _mapper.Map <CandidateDetailsDto>( await _unitOfWork.CandidateRepository.GetCandidateWithDetailsAsync(candidate.Id));
         }    
         else
         {

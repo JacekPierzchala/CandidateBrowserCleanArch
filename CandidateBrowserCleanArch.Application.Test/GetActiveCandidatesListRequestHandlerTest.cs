@@ -6,24 +6,18 @@ using System.Reflection.Metadata;
 namespace CandidateBrowserCleanArch.Application.Test
 {
     [TestClass]
-    public class GetActiveCandidatesListRequestHandlerTest
+    public sealed class GetActiveCandidatesListRequestHandlerTest : CandidatesHandlerTestBase
     {
-        private Mock<ICandidateRepository> _candidateRepositoryMock;
-        private IMapper _mapperMock;
         private GetActiveCandidatesListRequestHandler _handler;
         private CandidateQueryParameters queryParameters;
+        private Mock<IMapper> _mockMapper;
         public GetActiveCandidatesListRequestHandlerTest()
         {
-            _candidateRepositoryMock = new Mock<ICandidateRepository>();
-            var mapperConfig = new MapperConfiguration(c =>
-            {
-                c.AddProfile<MappingProfile>();
-            });
-            _mapperMock = mapperConfig.CreateMapper();
             queryParameters = new();
+            _mockMapper = new Mock<IMapper>();
             _handler = new GetActiveCandidatesListRequestHandler(_candidateRepositoryMock.Object, _mapperMock);
-
         }
+
         [TestMethod]
         public async Task Handle_ReturnsPagedResultResponseOfCandidateListDtoPage1()
         {
@@ -31,7 +25,7 @@ namespace CandidateBrowserCleanArch.Application.Test
             var request = new GetActiveCandidatesListRequest();
             request.QueryParameters = queryParameters;
 
-            var candidateListDtos = new List<CandidateListDto>
+            IEnumerable<CandidateListDto> candidateListDtos = new List<CandidateListDto>
             {
                 new CandidateListDto {},
                 new CandidateListDto {},
@@ -51,6 +45,7 @@ namespace CandidateBrowserCleanArch.Application.Test
             .ReturnsAsync(CandidatesData.ResultResponse(queryParameters));
 
             // Act
+
             var result = await _handler.Handle(request, CancellationToken.None);
 
             // Assert

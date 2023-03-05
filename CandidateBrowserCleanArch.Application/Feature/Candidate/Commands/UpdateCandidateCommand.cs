@@ -18,15 +18,13 @@ public class UpdateCandidateCommandHandler : IRequestHandler<UpdateCandidateComm
 {
     private readonly IMapper _mapper;
     private readonly IUnitOfWork _unitOfWork;
-    private readonly ICandidateRepository _candidateRepository;
+
 
     public UpdateCandidateCommandHandler(IMapper mapper,
-        IUnitOfWork unitOfWork,
-        ICandidateRepository candidateRepository)
+        IUnitOfWork unitOfWork)
     {
         _mapper = mapper;
         _unitOfWork = unitOfWork;
-        _candidateRepository = candidateRepository;
     }
     public async Task<ServiceReponse<CandidateDetailsDto>> Handle(UpdateCandidateCommand request, CancellationToken cancellationToken)
     {
@@ -41,20 +39,20 @@ public class UpdateCandidateCommandHandler : IRequestHandler<UpdateCandidateComm
         {
             throw new ValidationException(validationResult);
         }
-        var candidate = await _candidateRepository.GetAsync(request.Id);
+        var candidate = await _unitOfWork.CandidateRepository.GetAsync(request.Id);
         if (candidate==null)
         {
             throw new NotFoundException(nameof(request.CandidateUpdate.Email), request.Id);
         }
 
          _mapper.Map(request.CandidateUpdate, candidate);
-        await _candidateRepository.UpdateAsync(candidate);
+        await _unitOfWork.CandidateRepository.UpdateAsync(candidate);
 
         response.Success = await _unitOfWork.SaveAsync();
 
         if (response.Success)
         {
-            response.Data = _mapper.Map<CandidateDetailsDto>(await _candidateRepository.GetCandidateWithDetailsAsync(candidate.Id));
+            response.Data = _mapper.Map<CandidateDetailsDto>(await _unitOfWork.CandidateRepository.GetCandidateWithDetailsAsync(candidate.Id));
         }
         else
         {
