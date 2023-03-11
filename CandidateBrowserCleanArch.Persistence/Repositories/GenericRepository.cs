@@ -31,7 +31,7 @@ public class GenericRepository<T> : IGenericRepository<T>
 
     public async Task<IEnumerable<T>> GetAllAsync()
     {
-        throw new NotImplementedException();
+        return await _dbContext.Set<T>().ToListAsync();
     }
 
     public async Task<T> GetAsync(int id)

@@ -7,16 +7,9 @@ namespace CandidateBrowserCleanArch.Application.Test
     public  abstract class CandidatesHandlerTestBase
     {
         protected Mock<ICandidateRepository> _candidateRepositoryMock;
-        protected IMapper _mapperMock;
+        protected Mock<IUnitOfWork> _unitOfWork;
+        protected Mock<IMapper> _mockMapper;
 
-        public CandidatesHandlerTestBase()
-        {
-            _candidateRepositoryMock = new Mock<ICandidateRepository>();
-            var mapperConfig = new MapperConfiguration(c =>
-            {
-                c.AddProfile<MappingProfile>();
-            });
-            _mapperMock = mapperConfig.CreateMapper();
-        }
+    
     }
 }

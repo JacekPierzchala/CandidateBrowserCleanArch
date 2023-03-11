@@ -23,7 +23,9 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CandidateBrowserCleanArch.A
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CandidateBrowserCleanArch.Identity", "CandidateBrowserCleanArch.Identity\CandidateBrowserCleanArch.Identity.csproj", "{BE38FD4C-6385-49F2-9E33-63516681B4C4}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CandidateBrowserCleanArch.Application.Test", "CandidateBrowserCleanArch.Application.Test\CandidateBrowserCleanArch.Application.Test.csproj", "{37C0C924-8C94-480E-924C-44458C956163}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CandidateBrowserCleanArch.Application.UnitTests", "CandidateBrowserCleanArch.Application.Test\CandidateBrowserCleanArch.Application.UnitTests.csproj", "{37C0C924-8C94-480E-924C-44458C956163}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CandidateBrowserCleanArch.Persistence.IntegrationTests", "CandidateBrowserCleanArch.Persistence.IntegrationTests\CandidateBrowserCleanArch.Persistence.IntegrationTests.csproj", "{538D04A9-4220-495D-B83B-C87FE5A3E1EC}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -55,6 +57,10 @@ Global
 		{37C0C924-8C94-480E-924C-44458C956163}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{37C0C924-8C94-480E-924C-44458C956163}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{37C0C924-8C94-480E-924C-44458C956163}.Release|Any CPU.Build.0 = Release|Any CPU
+		{538D04A9-4220-495D-B83B-C87FE5A3E1EC}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{538D04A9-4220-495D-B83B-C87FE5A3E1EC}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{538D04A9-4220-495D-B83B-C87FE5A3E1EC}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{538D04A9-4220-495D-B83B-C87FE5A3E1EC}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -69,6 +75,7 @@ Global
 		{539362D6-B28F-4E6A-B0E8-5A55FB95D895} = {3C6BC7F4-5866-4D77-A984-A4557B63A164}
 		{BE38FD4C-6385-49F2-9E33-63516681B4C4} = {A1A70AA1-AAFA-42F8-8889-B6D88ACB3F5C}
 		{37C0C924-8C94-480E-924C-44458C956163} = {76027D10-F370-41E5-8276-9A7F4BB0558B}
+		{538D04A9-4220-495D-B83B-C87FE5A3E1EC} = {76027D10-F370-41E5-8276-9A7F4BB0558B}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {7FDB0C17-C550-4DFA-A304-AB329593E0C1}

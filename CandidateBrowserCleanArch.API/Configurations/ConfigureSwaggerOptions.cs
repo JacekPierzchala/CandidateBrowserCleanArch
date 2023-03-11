@@ -49,9 +49,8 @@ public class ConfigureSwaggerOptions : IConfigureNamedOptions<SwaggerGenOptions>
     {
         var info = new OpenApiInfo()
         {
-            Title = ".NET Core (.NET 6) Web API",
+            Title = $".NET Core {Environment.Version} Web API",
             Version = desc.ApiVersion.ToString(),
-
         };
         if (desc.IsDeprecated)
         {

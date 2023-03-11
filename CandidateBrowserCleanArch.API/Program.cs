@@ -39,14 +39,6 @@ if (app.Environment.IsDevelopment())
 {
     app.UseSwagger();
     SwaggerExtensions.ConfigureSwaggerUI(app);
-    //app.UseSwaggerUI(options =>
-    //{
-    //    foreach (var description in apiVersionDescriptionProvider.ApiVersionDescriptions)
-    //    {
-    //        options.SwaggerEndpoint($"/swagger/{description.GroupName}/swagger.json",
-    //            description.GroupName.ToUpperInvariant());
-    //    }
-    //});
 }
 
 app.UseHttpsRedirection();

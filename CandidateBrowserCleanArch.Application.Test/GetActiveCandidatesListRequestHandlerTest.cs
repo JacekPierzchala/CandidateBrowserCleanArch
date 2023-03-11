@@ -9,13 +9,9 @@ namespace CandidateBrowserCleanArch.Application.Test
     public sealed class GetActiveCandidatesListRequestHandlerTest : CandidatesHandlerTestBase
     {
         private GetActiveCandidatesListRequestHandler _handler;
-        private CandidateQueryParameters queryParameters;
-        private Mock<IMapper> _mockMapper;
         public GetActiveCandidatesListRequestHandlerTest()
         {
-            queryParameters = new();
-            _mockMapper = new Mock<IMapper>();
-            _handler = new GetActiveCandidatesListRequestHandler(_candidateRepositoryMock.Object, _mapperMock);
+            _mockMapper = new ();
         }
 
         [TestMethod]
@@ -23,9 +19,9 @@ namespace CandidateBrowserCleanArch.Application.Test
         {
             // Arrange
             var request = new GetActiveCandidatesListRequest();
-            request.QueryParameters = queryParameters;
-
-            IEnumerable<CandidateListDto> candidateListDtos = new List<CandidateListDto>
+            request.QueryParameters = CandidateRepositoryMock.QueryParameters;
+            _candidateRepositoryMock = CandidateRepositoryMock.GetCandidateRepository();
+            List<CandidateListDto> candidateListDtos = new ()
             {
                 new CandidateListDto {},
                 new CandidateListDto {},
@@ -41,11 +37,12 @@ namespace CandidateBrowserCleanArch.Application.Test
                 TotalCount = 6
             };
 
-            _candidateRepositoryMock.Setup(repo => repo.GetAllActiveCandidatesWithDetailsAsync(queryParameters))
-            .ReturnsAsync(CandidatesData.ResultResponse(queryParameters));
+            _mockMapper.Setup(x => x.Map<List<CandidateListDto>>
+                (_candidateRepositoryMock.Object.GetAllActiveCandidatesWithDetailsAsync(CandidateRepositoryMock.QueryParameters).Result.Items))
+             .Returns(candidateListDtos);
 
             // Act
-
+            _handler = new GetActiveCandidatesListRequestHandler(_candidateRepositoryMock.Object, _mockMapper.Object);
             var result = await _handler.Handle(request, CancellationToken.None);
 
             // Assert
@@ -63,9 +60,9 @@ namespace CandidateBrowserCleanArch.Application.Test
             // Arrange
             var request = new GetActiveCandidatesListRequest();
 
-            request.QueryParameters = queryParameters;
+            request.QueryParameters = CandidateRepositoryMock.QueryParameters;
             request.QueryParameters.PageNumber = 2;
-
+            _candidateRepositoryMock = CandidateRepositoryMock.GetCandidateRepository();
             var candidateListDtos = new List<CandidateListDto>
             {
                 new CandidateListDto {}
@@ -79,10 +76,12 @@ namespace CandidateBrowserCleanArch.Application.Test
                 TotalCount = 6
             };
 
-            _candidateRepositoryMock.Setup(repo => repo.GetAllActiveCandidatesWithDetailsAsync(queryParameters))
-            .ReturnsAsync(CandidatesData.ResultResponse(queryParameters));
 
+            _mockMapper.Setup(x => x.Map<List<CandidateListDto>>
+                (_candidateRepositoryMock.Object.GetAllActiveCandidatesWithDetailsAsync(CandidateRepositoryMock.QueryParameters).Result.Items))
+             .Returns(candidateListDtos);
             // Act
+            _handler = new GetActiveCandidatesListRequestHandler(_candidateRepositoryMock.Object, _mockMapper.Object);
             var result = await _handler.Handle(request, CancellationToken.None);
 
             // Assert
@@ -100,9 +99,10 @@ namespace CandidateBrowserCleanArch.Application.Test
             // Arrange
             var request = new GetActiveCandidatesListRequest();
 
-            request.QueryParameters = queryParameters;
+            request.QueryParameters = CandidateRepositoryMock.QueryParameters;
             request.QueryParameters.PageNumber = 1;
             request.QueryParameters.Companies = new[] { 1 };
+            _candidateRepositoryMock = CandidateRepositoryMock.GetCandidateRepository();
 
             var candidateListDtos = new List<CandidateListDto>
             {
@@ -160,11 +160,11 @@ namespace CandidateBrowserCleanArch.Application.Test
                 PageSize = 5,
                 TotalCount = candidateListDtos.Count(cand => cand.Companies.Any(com => com.Company.Id == 1))
             };
-
-            _candidateRepositoryMock.Setup(repo => repo.GetAllActiveCandidatesWithDetailsAsync(queryParameters))
-            .ReturnsAsync(CandidatesData.ResultResponse(queryParameters));
+            _mockMapper.Setup(x => x.Map<List<CandidateListDto>>(CandidatesData.ResultResponse(request.QueryParameters).Items))
+            .Returns(candidateListDtos.Where(cand => cand.Companies.Any(com => com.Company.Id == 1)).ToList());
 
             // Act
+            _handler = new GetActiveCandidatesListRequestHandler(_candidateRepositoryMock.Object, _mockMapper.Object);
             var result = await _handler.Handle(request, CancellationToken.None);
 
             // Assert
