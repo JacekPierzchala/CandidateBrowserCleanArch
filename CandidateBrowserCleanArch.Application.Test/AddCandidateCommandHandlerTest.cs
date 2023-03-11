@@ -15,15 +15,10 @@ namespace CandidateBrowserCleanArch.Application.Test
     [TestClass]
     public sealed class AddCandidateCommandHandlerTest : CandidatesHandlerTestBase
     {
-        private Mock<IUnitOfWork> _unitOfWork;
         private AddCandidateCommandHandler _handler;
-        private Mock<IMapper> _mockMapper;
         public AddCandidateCommandHandlerTest()
         {
-            _unitOfWork = new Mock<IUnitOfWork>();
-            _mockMapper = new Mock<IMapper>();
-            _handler = new AddCandidateCommandHandler(_mockMapper.Object,
-                            _unitOfWork.Object);
+            _mockMapper = new(); 
         }
 
         [TestMethod]
@@ -42,10 +37,13 @@ namespace CandidateBrowserCleanArch.Application.Test
                 }
             };
 
-            var candidate = CandidatesData.Candidates.FirstOrDefault(c => c.Id == 1);
+            CandidateRepositoryMock.CandidateId = 1;
+            _unitOfWork = CandidateRepositoryMock.GetUnitofWork();
+            var candidate = CandidatesData.Candidates.FirstOrDefault(c => c.Id == CandidateRepositoryMock.CandidateId);
   
             _mockMapper.Setup(x => x.Map<Candidate>(request.CreateCandidateDto))
                       .Returns(candidate);
+
             _mockMapper.Setup(x => x.Map<CandidateDetailsDto>(candidate))
              .Returns(new CandidateDetailsDto
              {
@@ -55,17 +53,8 @@ namespace CandidateBrowserCleanArch.Application.Test
                  Email = candidate.Email,
                  Id = candidate.Id
              });
-
-            _candidateRepositoryMock.Setup(x => x.AddAsync(candidate))
-                                   .ReturnsAsync(candidate);
-            _candidateRepositoryMock.Setup(x => x.GetCandidateWithDetailsAsync(candidate.Id))
-                       .ReturnsAsync(candidate);
-
-            _unitOfWork.Setup(x => x.CandidateRepository)
-                          .Returns(_candidateRepositoryMock.Object);
-            _unitOfWork.Setup(x => x.SaveAsync())
-                          .ReturnsAsync(true);
             // Act
+            _handler = new AddCandidateCommandHandler(_mockMapper.Object,_unitOfWork.Object);
             var result = await _handler.Handle(request, CancellationToken.None);
             // Assert
 
@@ -74,7 +63,6 @@ namespace CandidateBrowserCleanArch.Application.Test
             Assert.AreEqual(1, result.Data.Id);
             Assert.AreEqual("John", result.Data.FirstName);
              _mockMapper.Verify(x => x.Map<Candidate>(It.IsAny<CandidateCreateDto>()), Times.Once);
-            _candidateRepositoryMock.Verify(x => x.AddAsync(It.IsAny<Candidate>()), Times.Once);
             _unitOfWork.Verify(x => x.SaveAsync(), Times.Once);
 
         }
@@ -93,12 +81,9 @@ namespace CandidateBrowserCleanArch.Application.Test
 
                 }
             };
-
+            _unitOfWork = CandidateRepositoryMock.GetUnitofWork();
             var candidate = CandidatesData.Candidates.FirstOrDefault(c => c.Id == 1);
-
-            _unitOfWork.Setup(u => u.CandidateRepository).Returns(_candidateRepositoryMock.Object);
-            _candidateRepositoryMock.Setup(c => c.AddAsync(candidate)).Verifiable();
-            _unitOfWork.Setup(u => u.SaveAsync()).ReturnsAsync(true);
+            _handler = new AddCandidateCommandHandler(_mockMapper.Object, _unitOfWork.Object);
 
             // Act &Assert 
             await Assert.ThrowsExceptionAsync<ValidationException>(() => _handler.Handle(request, CancellationToken.None));

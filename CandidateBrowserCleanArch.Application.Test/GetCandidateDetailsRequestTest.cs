@@ -16,24 +16,34 @@ namespace CandidateBrowserCleanArch.Application.Test
         private GetCandidateDetailsRequestHandler _handler;
         public GetCandidateDetailsRequestTest()
         {
-
-            _handler = new GetCandidateDetailsRequestHandler(_candidateRepositoryMock.Object, _mapperMock);
+            _mockMapper = new();
         }
-
         [TestMethod]
         public async Task Handle_ReturnsCandidateDetails()
         {
             // Arrange
+
             var request = new GetCandidateDetailsRequest();
             request.CandidateId = 6;
+            CandidateRepositoryMock.CandidateId = request.CandidateId;
+            _candidateRepositoryMock = CandidateRepositoryMock.GetCandidateRepository();
 
-            _candidateRepositoryMock.Setup(repo => repo.GetCandidateWithDetailsAsync(request.CandidateId))
-            .ReturnsAsync(CandidatesData.Candidates.FirstOrDefault(c=>c.Id== request.CandidateId));
-
+            var candidate = CandidatesData.Candidates.FirstOrDefault(c => c.Id == request.CandidateId);        
+            _mockMapper.Setup(x => x.Map<CandidateDetailsDto>(candidate))
+             .Returns(new CandidateDetailsDto
+             {
+                 DateOfBirth = candidate.DateOfBirth,
+                 FirstName = candidate.FirstName,
+                 LastName = candidate.LastName,
+                 Email = candidate.Email,
+                 Id = candidate.Id
+             });
             // Act
+            _handler = new GetCandidateDetailsRequestHandler(_candidateRepositoryMock.Object, _mockMapper.Object);
             var result = await _handler.Handle(request, CancellationToken.None);
             // Assert
             Assert.IsNotNull(result);
+            Assert.AreEqual(request.CandidateId, result.Data.Id);
             Assert.IsInstanceOfType(result, typeof(ServiceReponse<CandidateDetailsDto>));
         }
 
@@ -42,14 +52,13 @@ namespace CandidateBrowserCleanArch.Application.Test
         {
             // Arrange
             var request = new GetCandidateDetailsRequest();
-
             request.CandidateId = 10;
-            _candidateRepositoryMock.Setup(repo => repo.GetCandidateWithDetailsAsync(request.CandidateId))
-            .ReturnsAsync((Candidate)null);
-
+            _candidateRepositoryMock = CandidateRepositoryMock.GetCandidateRepository();
+            CandidateRepositoryMock.CandidateId = request.CandidateId;
+            _handler = new GetCandidateDetailsRequestHandler(_candidateRepositoryMock.Object, _mockMapper.Object);
 
             // Act & Assert
-           await Assert.ThrowsExceptionAsync<NotFoundException>(() => _handler.Handle(request, CancellationToken.None));
+            await Assert.ThrowsExceptionAsync<NotFoundException>(() => _handler.Handle(request, CancellationToken.None));
 
         }
     }

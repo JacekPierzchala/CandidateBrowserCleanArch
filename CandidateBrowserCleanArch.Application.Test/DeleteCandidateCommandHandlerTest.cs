@@ -15,11 +15,6 @@ namespace CandidateBrowserCleanArch.Application.Test
         private Mock<IUnitOfWork> _unitOfWork;
         private DeleteCandidateCommandHandler _handler; 
    
-        public DeleteCandidateCommandHandlerTest()
-        {
-            _unitOfWork = new Mock<IUnitOfWork>();
-            _handler= new (_unitOfWork.Object);
-        }
 
         [TestMethod]
         public async Task DeleteCandidateCommandTest()
@@ -27,14 +22,11 @@ namespace CandidateBrowserCleanArch.Application.Test
             //Arrange
             var request = new DeleteCandidateCommand();
             request.CandidateId = 1;
+            CandidateRepositoryMock.CandidateId = request.CandidateId;
+            _unitOfWork = CandidateRepositoryMock.GetUnitofWork();
+            _handler = new(_unitOfWork.Object);
 
-            var candidate = CandidatesData.Candidates.FirstOrDefault(x => x.Id == request.CandidateId);
 
-            _unitOfWork.Setup(u => u.CandidateRepository).Returns(_candidateRepositoryMock.Object);
-            _candidateRepositoryMock.Setup(c => c.DeleteAsync(candidate!));
-            _unitOfWork.Setup(u => u.SaveAsync()).ReturnsAsync(true);
-            _candidateRepositoryMock.Setup(c => c.GetAsync(candidate.Id)).ReturnsAsync(candidate);
-            
             //act
             var result = await _handler.Handle(request, CancellationToken.None);
 
@@ -48,14 +40,10 @@ namespace CandidateBrowserCleanArch.Application.Test
             //Arrange
             var request = new DeleteCandidateCommand();
             request.CandidateId = 20;
+            CandidateRepositoryMock.CandidateId = request.CandidateId;
+            _unitOfWork = CandidateRepositoryMock.GetUnitofWork();
+            _handler = new(_unitOfWork.Object);
 
-            var candidate = CandidatesData.Candidates.FirstOrDefault(x => x.Id == request.CandidateId);
-
-            _unitOfWork.Setup(u => u.CandidateRepository).Returns(_candidateRepositoryMock.Object);
-            _candidateRepositoryMock.Setup(c => c.DeleteAsync(candidate!));
-            _unitOfWork.Setup(u => u.SaveAsync()).ReturnsAsync(true);
-            _candidateRepositoryMock.Setup(c => c.GetAsync(candidate!=null?candidate.Id:0 )).ReturnsAsync((Candidate)null);
- 
             // act & Assert
             await Assert.ThrowsExceptionAsync<NotFoundException>(() => _handler.Handle(request, CancellationToken.None));
         }
