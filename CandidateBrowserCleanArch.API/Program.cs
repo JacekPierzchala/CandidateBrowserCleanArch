@@ -4,6 +4,7 @@ using CandidateBrowserCleanArch.Application;
 using CandidateBrowserCleanArch.Identity;
 using CandidateBrowserCleanArch.Infrastructure;
 using CandidateBrowserCleanArch.Persistence;
+using Serilog;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -13,6 +14,9 @@ builder.Services.ConfigureIdentityServices(builder.Configuration);
 builder.Services.ConfigureInfrastructureServices(builder.Configuration);
 
 // Add services to the container.
+builder.Host.UseSerilog((host, config) => config
+    .WriteTo.Console()
+    .ReadFrom.Configuration(host.Configuration));
 
 builder.Services.AddControllers();
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
@@ -38,7 +42,7 @@ if (app.Environment.IsDevelopment())
     app.UseSwagger();
     SwaggerExtensions.ConfigureSwaggerUI(app);
 }
-
+app.UseSerilogRequestLogging();
 app.UseHttpsRedirection();
 app.UseCors("AllowAll");
 app.UseAuthorization();
