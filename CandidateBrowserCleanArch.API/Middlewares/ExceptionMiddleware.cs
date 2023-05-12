@@ -28,7 +28,7 @@ public class ExceptionMiddleware
         }
     }
 
-    private async Task HandleExceptionAsync(HttpContext context, Exception ex)
+    private async  Task HandleExceptionAsync(HttpContext context, Exception ex)
     {
         context.Response.ContentType = "application/json";
         HttpStatusCode statusCode = HttpStatusCode.InternalServerError;
@@ -37,8 +37,11 @@ public class ExceptionMiddleware
         IExceptionHandler handler;
         switch (ex)
         {
-            case BadRequestException :
+            case BadRequestException:
                 handler = new BadRequestExceptionHandler();
+                break;
+            case EmailSenderException:
+                handler = new EmailSenderExceptionHandler();
                 break;
             case ValidationException:
                 handler = new ValidationExceptionHandler();

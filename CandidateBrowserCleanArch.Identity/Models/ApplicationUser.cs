@@ -11,11 +11,13 @@ namespace CandidateBrowserCleanArch.Identity;
 
 public class ApplicationUser:IdentityUser
 {
-    [Column(TypeName = "nvarchar(150)")]
+    [Column(TypeName = "nvarchar(100)")]
     public string? FirstName { get; set; }
 
-    [Column(TypeName = "nvarchar(150)")]
+    [Column(TypeName = "nvarchar(100)")]
     public string? LastName { get; set; }
     public DateTime DateRegistered { get; set; } = DateTime.UtcNow;
     public DateTime DateLogged { get; set; }
+    public string? RefreshToken { get; set; }
+    public DateTime RefreshTokenExpiryTime { get; set; }
 }

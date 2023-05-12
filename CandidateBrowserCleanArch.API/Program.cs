@@ -2,17 +2,16 @@ using CandidateBrowserCleanArch.API;
 using CandidateBrowserCleanArch.API.Configurations;
 using CandidateBrowserCleanArch.Application;
 using CandidateBrowserCleanArch.Identity;
+using CandidateBrowserCleanArch.Infrastructure;
 using CandidateBrowserCleanArch.Persistence;
-using Microsoft.AspNetCore.Mvc.ApiExplorer;
-using Microsoft.AspNetCore.Mvc.Versioning;
-using Microsoft.Extensions.DependencyInjection;
-using Microsoft.OpenApi.Models;
 
 var builder = WebApplication.CreateBuilder(args);
 
 builder.Services.ConfigureApplicationServices();
 builder.Services.ConfigurePersistenceServices(builder.Configuration);
 builder.Services.ConfigureIdentityServices(builder.Configuration);
+builder.Services.ConfigureInfrastructureServices(builder.Configuration);
+
 // Add services to the container.
 
 builder.Services.AddControllers();
@@ -28,13 +27,12 @@ builder.Services.ConfigureVersionedApiExplorer();
 builder.Services.AddSwaggerDocs(builder.Configuration);
 builder.Services.ConfigureOptions<ConfigureSwaggerOptions>();
 
-
 var app = builder.Build();
 
 app.UseMiddleware<ExceptionMiddleware>();
 app.UseAuthentication();
 // Configure the HTTP request pipeline.
-var apiVersionDescriptionProvider = app.Services.GetRequiredService<IApiVersionDescriptionProvider>();
+
 if (app.Environment.IsDevelopment())
 {
     app.UseSwagger();
@@ -42,9 +40,9 @@ if (app.Environment.IsDevelopment())
 }
 
 app.UseHttpsRedirection();
-
+app.UseCors("AllowAll");
 app.UseAuthorization();
-
+app.UseStaticFiles();
 app.MapControllers();
 
 app.Run();

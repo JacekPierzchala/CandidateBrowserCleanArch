@@ -49,7 +49,7 @@ public class ConfigureSwaggerOptions : IConfigureNamedOptions<SwaggerGenOptions>
     {
         var info = new OpenApiInfo()
         {
-            Title = $".NET Core {Environment.Version} Web API",
+            Title = $"CandidateBrowser Web API",
             Version = desc.ApiVersion.ToString(),
         };
         if (desc.IsDeprecated)

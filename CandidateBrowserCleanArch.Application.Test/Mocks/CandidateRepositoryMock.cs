@@ -1,10 +1,6 @@
 ﻿using CandidateBrowserCleanArch.Domain;
+using CandidateBrowserCleanArch.Tests.MockData.Mocks;
 using Moq;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace CandidateBrowserCleanArch.Application.Test;
 
@@ -15,23 +11,23 @@ internal  class CandidateRepositoryMock
     internal static Mock<ICandidateRepository> GetCandidateRepository()
     {
        var mock = new Mock<ICandidateRepository>();
-         
+        
         mock.Setup(repo => repo.GetAllActiveCandidatesWithDetailsAsync(QueryParameters))
-        .ReturnsAsync(CandidatesData.ResultResponse(QueryParameters));
+        .ReturnsAsync(CandidatesResponsesData.ResultResponse(QueryParameters));
 
 
         mock.Setup(repo => repo.GetCandidateWithDetailsAsync(CandidateId))
-        .ReturnsAsync(CandidatesData.Candidates.FirstOrDefault(c => c.Id == CandidateId));
+        .ReturnsAsync(CandidatesData.Candidates().FirstOrDefault(c => c.Id == CandidateId));
 
         mock.Setup(x => x.AddAsync(new Candidate() ))
             .ReturnsAsync(new Candidate { Id=1 });
 
-        mock.Setup(c => c.GetAsync(CandidateId)).ReturnsAsync(CandidatesData.Candidates.FirstOrDefault(c => c.Id == CandidateId));
+        mock.Setup(c => c.GetAsync(CandidateId)).ReturnsAsync(CandidatesData.Candidates().FirstOrDefault(c => c.Id == CandidateId));
 
-        mock.Setup(c => c.DeleteAsync(CandidatesData.Candidates.FirstOrDefault(c => c.Id == CandidateId)));
+        mock.Setup(c => c.DeleteAsync(CandidatesData.Candidates().FirstOrDefault(c => c.Id == CandidateId)));
 
-        mock.Setup(x => x.UpdateAsync(CandidatesData.Candidates.FirstOrDefault(c => c.Id == CandidateId)))
-           .ReturnsAsync(CandidatesData.Candidates.FirstOrDefault(c => c.Id == CandidateId));
+        mock.Setup(x => x.UpdateAsync(CandidatesData.Candidates().FirstOrDefault(c => c.Id == CandidateId)))
+           .ReturnsAsync(CandidatesData.Candidates().FirstOrDefault(c => c.Id == CandidateId));
 
         return mock;    
     }
@@ -47,9 +43,7 @@ internal  class CandidateRepositoryMock
                       .ReturnsAsync(true);
 
         return mock;
-
     }
 
-    //public static Mock<ILeaveTypeRepository> GetMockLeaveTypeRepository()
 
 }

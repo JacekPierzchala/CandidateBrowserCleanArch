@@ -16,7 +16,7 @@ namespace CandidateBrowserCleanArch.Application.Test
 
         public UpdateCandidateCommandHandlerTest()
         {
-            _mockMapper = new();
+            initMapper();
         }
         [TestMethod]
         public async Task UpdateCandidateTest()
@@ -26,30 +26,20 @@ namespace CandidateBrowserCleanArch.Application.Test
             var request = new UpdateCandidateCommand();
             request.Id= 1;
             CandidateRepositoryMock.CandidateId = request.Id;
+
             _unitOfWork = CandidateRepositoryMock.GetUnitofWork();
-            var candidate = CandidatesData.Candidates.FirstOrDefault(x => x.Id == CandidateRepositoryMock.CandidateId);
-
-            var candidateDTo = new CandidateUpdateDto
+            request.CandidateUpdate = new()
             {
-                 Id= candidate.Id,
-                 DateOfBirth= candidate.DateOfBirth,
-                 FirstName= candidate.FirstName,
-                 LastName= candidate.LastName,
-                 Email= candidate.Email,
+
+                Id = request.Id,
+                DateOfBirth = DateTime.Now,
+                FirstName = "John",
+                LastName = "Doe",
+                Email = "John.Doe@gmail.com",
+
             };
-            request.CandidateUpdate = candidateDTo;
+            _handler = new(_mapper,_unitOfWork.Object);
 
-
-            _mockMapper.Setup(x => x.Map<CandidateDetailsDto>(candidate))
-             .Returns(new CandidateDetailsDto
-             {
-                 DateOfBirth = candidate.DateOfBirth,
-                 FirstName = candidate.FirstName,
-                 LastName = candidate.LastName,
-                 Email = candidate.Email,
-                 Id = candidate.Id
-             });
-            _handler = new(_mockMapper.Object,_unitOfWork.Object);
             //Act
             var result = await _handler.Handle(request, CancellationToken.None);
 
@@ -67,7 +57,7 @@ namespace CandidateBrowserCleanArch.Application.Test
             request.Id = 1;
             CandidateRepositoryMock.CandidateId = 2;
             _unitOfWork = CandidateRepositoryMock.GetUnitofWork();
-            var candidateDTo = new CandidateUpdateDto
+            request.CandidateUpdate = new CandidateUpdateDto
             {
                 Id = CandidateRepositoryMock.CandidateId,
                 DateOfBirth = DateTime.Now,
@@ -76,8 +66,7 @@ namespace CandidateBrowserCleanArch.Application.Test
                 Email = "John.Johnsom@gmail.com",
             };
 
-            _handler = new(_mockMapper.Object, _unitOfWork.Object);
-            request.CandidateUpdate = candidateDTo;
+            _handler = new(_mapper, _unitOfWork.Object);
 
             //Act & Assert
             await Assert.ThrowsExceptionAsync<BadRequestException>(() => _handler.Handle(request, CancellationToken.None));
@@ -91,17 +80,16 @@ namespace CandidateBrowserCleanArch.Application.Test
             request.Id = 1;
             CandidateRepositoryMock.CandidateId = request.Id;
             _unitOfWork = CandidateRepositoryMock.GetUnitofWork();
-            var candidateDTo = new CandidateUpdateDto
+
+            request.CandidateUpdate = new CandidateUpdateDto
             {
                 Id = CandidateRepositoryMock.CandidateId,
                 DateOfBirth = DateTime.Now,
                 FirstName = "",
                 LastName = "Doe",
                 Email = "John.Johnsom@gmail.com",
-            };
-
-            request.CandidateUpdate = candidateDTo;
-            _handler = new(_mockMapper.Object, _unitOfWork.Object);
+            }; 
+            _handler = new(_mapper, _unitOfWork.Object);
 
             //Act & Assert
             await Assert.ThrowsExceptionAsync<ValidationException>(() => _handler.Handle(request, CancellationToken.None));
@@ -113,19 +101,17 @@ namespace CandidateBrowserCleanArch.Application.Test
             var request = new UpdateCandidateCommand();
             request.Id = 20;
             CandidateRepositoryMock.CandidateId = request.Id;
-            _unitOfWork = CandidateRepositoryMock.GetUnitofWork();
-
-            var candidateDTo = new CandidateUpdateDto
+            _unitOfWork = CandidateRepositoryMock.GetUnitofWork();           
+            request.CandidateUpdate = new CandidateUpdateDto
             {
                 Id = request.Id,
                 DateOfBirth = DateTime.Now,
                 FirstName = "John",
                 LastName = "Johnson",
                 Email = "John.Johnsom@gmail.com",
-            };
-            request.CandidateUpdate = candidateDTo;
+            }; ;
 
-            _handler = new(_mockMapper.Object, _unitOfWork.Object);
+            _handler = new(_mapper, _unitOfWork.Object);
 
             //Act & Assert
             await Assert.ThrowsExceptionAsync<NotFoundException>(() => _handler.Handle(request, CancellationToken.None));

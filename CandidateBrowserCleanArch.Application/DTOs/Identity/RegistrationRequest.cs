@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace CandidateBrowserCleanArch.Application;
 
-public class RegistrationRequest
+public class RegistrationRequest: BaseAccountDto
 {
     [Required]
     public string FirstName { get; set; }
@@ -15,11 +15,7 @@ public class RegistrationRequest
     public string LastName { get; set; }
 
     [Required]
-    [EmailAddress]
-    public string Email { get; set; }
+    public string ConfirmPassword { get; set; }
+    public string ReturnUrl { get; set; }
 
-
-    [Required]
-    [MinLength(6)]    
-    public string Password { get; set; }
 }

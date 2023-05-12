@@ -9,5 +9,5 @@ namespace CandidateBrowserCleanArch.Application;
 
 public interface IProjectRepository:IGenericRepository<Project>
 {
-    Task<IEnumerable<Project>> GetAllActiveProjectAsync();
+    Task<IEnumerable<Project>> GetAllActiveProjectsAsync();
 }

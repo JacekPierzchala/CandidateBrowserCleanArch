@@ -4,8 +4,9 @@ namespace CandidateBrowserCleanArch.Identity;
 
 public interface IJwtService
 {
-    string GenerateToken(IList<Claim> userClaims, 
-        IList<string> roles, 
-        ApplicationUser user, 
-        IEnumerable<string> rolePermissions);
+    string GenerateToken(ApplicationUser user, IEnumerable<Claim> userClaims);
+    ClaimsPrincipal GetPrincipalFromExpiredToken(string token);
+    string GenerateRefreshToken();
+
+
 }

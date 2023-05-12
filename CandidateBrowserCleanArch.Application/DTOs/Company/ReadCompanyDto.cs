@@ -1,6 +1,6 @@
 ﻿namespace CandidateBrowserCleanArch.Application;
 
-public class CompanyDto:BaseDto
+public class ReadCompanyDto:BaseDto
 {
     public string? CompanyName { get; set; }
 }

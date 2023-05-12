@@ -2,5 +2,5 @@
 
 public class CandidateProjectDto:BaseDto
 {
-    public ProjectDto Project { get; set; }
+    public ReadProjectDto Project { get; set; }
 }

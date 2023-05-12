@@ -7,9 +7,9 @@ public class MappingProfile : Profile
 {
     public MappingProfile()
     {
-        CreateMap<Company, CompanyDto>()
+        CreateMap<Company, ReadCompanyDto>()
             .ReverseMap();
-        CreateMap<Project, ProjectDto>()
+        CreateMap<Project, ReadProjectDto>()
             .ReverseMap();
 
         CreateMap<CandidateCompany, CandidateCompanyDto>()

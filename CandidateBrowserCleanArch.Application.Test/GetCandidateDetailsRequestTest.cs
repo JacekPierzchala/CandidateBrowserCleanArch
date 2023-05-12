@@ -16,7 +16,7 @@ namespace CandidateBrowserCleanArch.Application.Test
         private GetCandidateDetailsRequestHandler _handler;
         public GetCandidateDetailsRequestTest()
         {
-            _mockMapper = new();
+            initMapper();
         }
         [TestMethod]
         public async Task Handle_ReturnsCandidateDetails()
@@ -27,19 +27,9 @@ namespace CandidateBrowserCleanArch.Application.Test
             request.CandidateId = 6;
             CandidateRepositoryMock.CandidateId = request.CandidateId;
             _candidateRepositoryMock = CandidateRepositoryMock.GetCandidateRepository();
-
-            var candidate = CandidatesData.Candidates.FirstOrDefault(c => c.Id == request.CandidateId);        
-            _mockMapper.Setup(x => x.Map<CandidateDetailsDto>(candidate))
-             .Returns(new CandidateDetailsDto
-             {
-                 DateOfBirth = candidate.DateOfBirth,
-                 FirstName = candidate.FirstName,
-                 LastName = candidate.LastName,
-                 Email = candidate.Email,
-                 Id = candidate.Id
-             });
+            _handler = new GetCandidateDetailsRequestHandler(_candidateRepositoryMock.Object, _mapper);
+            
             // Act
-            _handler = new GetCandidateDetailsRequestHandler(_candidateRepositoryMock.Object, _mockMapper.Object);
             var result = await _handler.Handle(request, CancellationToken.None);
             // Assert
             Assert.IsNotNull(result);
@@ -55,7 +45,7 @@ namespace CandidateBrowserCleanArch.Application.Test
             request.CandidateId = 10;
             _candidateRepositoryMock = CandidateRepositoryMock.GetCandidateRepository();
             CandidateRepositoryMock.CandidateId = request.CandidateId;
-            _handler = new GetCandidateDetailsRequestHandler(_candidateRepositoryMock.Object, _mockMapper.Object);
+            _handler = new GetCandidateDetailsRequestHandler(_candidateRepositoryMock.Object, _mapper);
 
             // Act & Assert
             await Assert.ThrowsExceptionAsync<NotFoundException>(() => _handler.Handle(request, CancellationToken.None));

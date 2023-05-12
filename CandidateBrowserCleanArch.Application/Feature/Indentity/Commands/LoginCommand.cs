@@ -21,6 +21,14 @@ internal class LoginCommandHandler : IRequestHandler<LoginCommand, AuthResponse>
     }
     public async Task<AuthResponse> Handle(LoginCommand request, CancellationToken cancellationToken)
     {
+        var validator = new AuthRequestValidator();
+        var validationResult=await validator.ValidateAsync(request.AuthRequest, cancellationToken);
+
+        if(!validationResult.IsValid) 
+        { 
+            throw new ValidationException(validationResult);
+        }
+
         var response=await _authService.Login(request.AuthRequest);
         if(!response.Success)
         {
