@@ -6,7 +6,8 @@ using System.Threading.Tasks;
 
 namespace CandidateBrowserCleanArch.Application;
 
-public class ProjectDto:BaseDto
+enum ExternalAuthProvider
 {
-    public string? ProjectName { get; set; }
+    Google,
+    Facebook
 }

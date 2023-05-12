@@ -34,8 +34,11 @@ public class CandidateRepository : GenericRepository<Candidate>, ICandidateRepos
                       (queryParameters.Projects == null || c.Projects.Any(co => queryParameters.Projects.Any(q => q == co.ProjectId))))
             .ToListAsync();
 
+        queryParameters.PageNumber=(int)Math.Ceiling((double)totalItems.Count() / (double)queryParameters.PageSize)
+            < queryParameters.PageNumber? (int)Math.Ceiling((double)totalItems.Count() / (double)queryParameters.PageSize): queryParameters.PageNumber;
+
         var items =  totalItems
-                      .Skip(queryParameters.PageSize * (queryParameters.PageNumber - 1))
+                      .Skip(queryParameters.PageSize> totalItems.Count()?0:(queryParameters.PageSize * (queryParameters.PageNumber - 1)))
                       .Take(queryParameters.PageSize)
                       .ToList();
 
@@ -43,7 +46,7 @@ public class CandidateRepository : GenericRepository<Candidate>, ICandidateRepos
         return new PagedResultResponse<Candidate>
         {
             Items = items,
-            PageNumber = queryParameters.PageNumber,
+            PageNumber = queryParameters.PageSize> totalItems.Count()?1: queryParameters.PageNumber,
             PageSize = queryParameters.PageSize,
             TotalCount = totalItems.Count()
         };

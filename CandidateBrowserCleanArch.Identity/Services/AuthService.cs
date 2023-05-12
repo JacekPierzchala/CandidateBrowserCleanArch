@@ -1,64 +1,100 @@
 ﻿using CandidateBrowserCleanArch.Application;
-using Microsoft.AspNetCore.Identity;
-using Microsoft.Extensions.Options;
-using Microsoft.IdentityModel.Tokens;
-using System;
-using System.Collections.Generic;
-using System.IdentityModel.Tokens.Jwt;
-using System.Linq;
-using System.Security.Claims;
-using System.Text;
-using System.Threading.Tasks;
+using CandidateBrowserCleanArch.Identity.Helpers;
 
 namespace CandidateBrowserCleanArch.Identity;
 
 internal class AuthService : IAuthService
 {
-    private readonly UserManager<ApplicationUser> _userManager;
-    private readonly SignInManager<ApplicationUser> _signInManager;
     private readonly IJwtService _jwtService;
-    private readonly RoleManager<IdentityRole> _roleManager;
+    private readonly IUserServicesManager _userServicesManager;
+    private readonly IExternalAuthProvidersValidator _externalAuthProvidersValidator;
+    private readonly IGoogleAuthHelper _googleAuthHelper;
 
-    public AuthService(UserManager<ApplicationUser> userManager,
-        SignInManager<ApplicationUser> signInManager,
-        IJwtService jwtService,
-        RoleManager<IdentityRole> roleManager)
-
+    public AuthService(IJwtService jwtService,
+        IUserServicesManager userServicesManager,
+        IExternalAuthProvidersValidator externalAuthProvidersValidator,
+        IGoogleAuthHelper googleAuthHelper
+)
     {
-        _userManager = userManager;
-        _signInManager = signInManager;
         _jwtService = jwtService;
-        _roleManager = roleManager;
+        _userServicesManager = userServicesManager;
+        _externalAuthProvidersValidator = externalAuthProvidersValidator;
+        _googleAuthHelper = googleAuthHelper;
     }
 
     public async Task<AuthResponse> Login(AuthRequest request)
     {
         var response = new AuthResponse();
-        var user = await _userManager.FindByEmailAsync(request.Email);
-        if (user == null)
+
+        var validationAttempt = await _userServicesManager.ValidateAndLoginUserAsync(request.Email, request.Password);
+        if (validationAttempt.user == null)
         {
-            response.Message = $"Username '{request.Email}' does not exists";
+            response.Message = validationAttempt.validationMessage;
             return response;
         }
-        var result = await _signInManager.PasswordSignInAsync(user.UserName, request.Password, false, false);
-        if (!result.Succeeded)
+        var user = validationAttempt.user;
+        user.RefreshToken = _jwtService.GenerateRefreshToken();
+
+        await _userServicesManager.UpdateUser(user);
+        var userClaims=await _userServicesManager.GatherUserClaims(user);
+
+        response.Token = _jwtService.GenerateToken(user, userClaims);
+        response.RefreshToken = user.RefreshToken;
+        response.Success = true;
+
+        return response;
+    }
+
+    public async Task<AuthResponse> AuthWithGoogle(string authCode, string redirectUrl)
+    {
+        var response = new AuthResponse();
+
+        var token = await _googleAuthHelper.GetAccessTokenAsync(authCode, redirectUrl);
+
+        var validationResult= await _externalAuthProvidersValidator.ValidateGoogleToken(token);
+        if(validationResult.user is null)
         {
-            response.Message = $"Credentials for '{request.Email}' arent valid";
+            response.Message = validationResult.message;
+            return response;
+        }           
+        var result = await _userServicesManager.ValidateExternalProviderUserAsync(validationResult.user);
+        if (result.user == null)
+        {
+            response.Message = string.Join(":", result.validationMessages);
             return response;
         }
-        user.DateLogged = DateTime.UtcNow;
-        await _userManager.UpdateAsync(user);
 
-        var userClaims = await _userManager.GetClaimsAsync(user);
-        var roles = await _userManager.GetRolesAsync(user);
+        result.user.RefreshToken = _jwtService.GenerateRefreshToken();
 
-        var roleClaims= new List<Claim>();
-        foreach (var role in roles.Where(r => !string.IsNullOrWhiteSpace(r)))
-        {
-            var roleClaimsToAdd = await _roleManager.GetClaimsAsync(await _roleManager.FindByNameAsync(role));
-            roleClaims.AddRange(roleClaimsToAdd);
+        await _userServicesManager.UpdateUser(result.user);
+        var userClaims = await _userServicesManager.GatherUserClaims(result.user);
+
+        response.Token = _jwtService.GenerateToken(result.user, userClaims);
+        response.RefreshToken = result.user.RefreshToken;
+        response.Success = true;
+
+        return response;
+    }
+
+    public async Task<AuthResponse> RefreshToken(RefreshTokenRequest request)
+    {
+        var response = new AuthResponse();
+
+        var principal = _jwtService.GetPrincipalFromExpiredToken(request.Token);
+        var validationRequest=await _userServicesManager.ValidateUserAndToken(principal.Identity.Name, request.RefreshToken);
+        if(validationRequest.user == null) 
+        { 
+            response.Message=validationRequest.validationMessage;
+            return response;
         }
-        response.Token = _jwtService.GenerateToken(userClaims, roles, user, roleClaims.Select(c => c.Value).Distinct().ToList());
+        var user=validationRequest.user;
+        var userClaims = await _userServicesManager.GatherUserClaims(user);
+
+        response.Token = _jwtService.GenerateToken(user, userClaims);
+        user.RefreshToken = _jwtService.GenerateRefreshToken();
+        await _userServicesManager.UpdateUser(user);    
+
+        response.RefreshToken = user.RefreshToken;
         response.Success = true;
 
         return response;
@@ -66,37 +102,110 @@ internal class AuthService : IAuthService
 
     public async Task<RegistrationResponse> Register(RegistrationRequest request)
     {
-        var response = new RegistrationResponse();
-        var existingUser = await _userManager.FindByEmailAsync(request.Email);
-        if (existingUser != null)
-        {
-            response.Errors.Add($"Username '{request.Email}' already exists");
-            return response;
-        }
-
         var user = new ApplicationUser
         {
             Email = request.Email,
             FirstName = request.FirstName,
             LastName = request.LastName,
-            EmailConfirmed = true,
             UserName = request.Email
         };
- 
-        var result = await _userManager.CreateAsync(user, request.Password);
-        if (!result.Succeeded)
+
+        var response = new RegistrationResponse();
+
+        var result=await _userServicesManager.ValidateAndRegisterUserAsync(user, request.Password);
+        if(result.user==null)
         {
-            result.Errors.ToList().ForEach(error => response.Errors.Add(error.Description));            
+            result.validationMessages.ToList().ForEach(error => response.Errors.Add(error));
             return response;
         }
-
-        await _userManager.AddToRoleAsync(user, "User");
-        response.Success = true;
-        response.Message = $"{user.Email} registration success";
         response.UserId = user.Id;
+
+        var tokenAttempt=await _userServicesManager.CreateConfirmEmailToken(user);
+        if(!string.IsNullOrEmpty(tokenAttempt.encryptedEmailToken))
+        {
+            response.Success = true;
+            response.Message = $"{user.Email} registration success";
+            response.ValidToken = tokenAttempt.encryptedEmailToken;
+            response.EncryptedUserId = tokenAttempt.encryptedUserId;
+        }
+        else
+        {
+            response.Message = $"{tokenAttempt.validationMessage}";
+        }
         return response;
     }
 
+    public async Task<ServiceReponse<string>> GetGoogleAuthUrl(string redirectUrl)
+    {
+        var response = new ServiceReponse<string>();
+        try
+        {
+            response.Data= _googleAuthHelper.GetGoogleUrl(redirectUrl);
+            response.Success = true;
+        }
+        catch (Exception ex)
+        {
+            response.Data = redirectUrl; 
+            response.Success = false;
+            response.Message = ex.Message;
+        
+        }
+        return response;
+
+    }
+
+    public async Task<ServiceReponse<bool>> ConfirmEmail(ConfirmEmailRequest request)
+    {
+        var response = new ServiceReponse<bool>();
+        response.Success=await _userServicesManager.ValidateAndConfirmEmail(request.UserId, request.Token);
+        return response;
+    }
+
+    public async Task<ConfirmEmailRepeatResponse> ConfirmEmailRepeat(ConfirmEmailRepeatRequest request)
+    {
+        var response = new ConfirmEmailRepeatResponse();
+        var tokenAttempt = await _userServicesManager.CreateConfirmEmailToken(request.Email);
+        if (!string.IsNullOrEmpty(tokenAttempt.encryptedEmailToken))
+        {
+            response.Success = true;
+            response.ValidToken = tokenAttempt.encryptedEmailToken;
+            response.EncryptedUserId = tokenAttempt.encryptedUserId;           
+        }
+        else
+        {
+            response.Message = $"{tokenAttempt.validationMessage}";
+        }
+        return response;
+        
+    }
+
+    public async Task<ForgotPasswordResponse> ForgotPassword(ForgotPasswordRequest request)
+    {
+        var response = new ForgotPasswordResponse();
+        var tokenAttempt = await _userServicesManager.CreateResetPasswordToken(request.Email);
+        if (!string.IsNullOrEmpty(tokenAttempt.encryptedPasswordToken))
+        {
+            response.Success = true;
+            response.ValidToken = tokenAttempt.encryptedPasswordToken;
+            response.EncryptedUserId = tokenAttempt.encryptedUserId;
+        }
+        else
+        {
+            response.Message = $"{tokenAttempt.validationMessage}";
+        }
+
+        return response;
+    }
+
+    public async Task<ServiceReponse<bool>> ResetPassword(ResetPasswordRequest request)
+    {
+        var response = new ServiceReponse<bool>();            
+        var result = await _userServicesManager.ValidateAndResetPassword(request.UserId, request.Token,request.NewPassword);
+        response.Success = result.result;
+        response.Message = result.message;
+
+        return response;
+    }
 }
 
 

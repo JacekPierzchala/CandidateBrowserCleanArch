@@ -1,13 +1,18 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk.Web">
 
   <PropertyGroup>
-    <TargetFramework>net6.0</TargetFramework>
+    <TargetFramework>net7.0</TargetFramework>
     <Nullable>enable</Nullable>
     <ImplicitUsings>enable</ImplicitUsings>
     <UserSecretsId>48ab2a2e-96c0-4017-8b72-a87c58766fd2</UserSecretsId>
   </PropertyGroup>
 
+
+
+
   <ItemGroup>
+    <PackageReference Include="Google.Apis.Auth" Version="1.60.0" />
+    <PackageReference Include="Microsoft.AspNetCore.Authentication.Google" Version="6.0.16" />
     <PackageReference Include="Microsoft.AspNetCore.Mvc.Versioning" Version="5.0.0" />
     <PackageReference Include="Microsoft.AspNetCore.Mvc.Versioning.ApiExplorer" Version="5.0.0" />
     <PackageReference Include="Microsoft.EntityFrameworkCore.Design" Version="6.0.13">
@@ -21,7 +26,13 @@
   <ItemGroup>
     <ProjectReference Include="..\CandidateBrowserCleanArch.Application\CandidateBrowserCleanArch.Application.csproj" />
     <ProjectReference Include="..\CandidateBrowserCleanArch.Identity\CandidateBrowserCleanArch.Identity.csproj" />
+    <ProjectReference Include="..\CandidateBrowserCleanArch.Infrastructure\CandidateBrowserCleanArch.Infrastructure.csproj" />
     <ProjectReference Include="..\CandidateBrowserCleanArch.Persistence\CandidateBrowserCleanArch.Persistence.csproj" />
   </ItemGroup>
+
+  <ItemGroup>
+    <Folder Include="wwwroot\profileImages\" />
+  </ItemGroup>
+
 
 </Project>

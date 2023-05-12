@@ -11,7 +11,8 @@ namespace CandidateBrowserCleanArch.API.Configurations
                 opt.DefaultApiVersion = new Microsoft.AspNetCore.Mvc.ApiVersion(1, 0);
                 opt.AssumeDefaultVersionWhenUnspecified = true;
                 opt.ReportApiVersions = true;
-                opt.ApiVersionReader = ApiVersionReader.Combine(new HeaderApiVersionReader("x-api-version"));
+                 opt.ApiVersionReader = ApiVersionReader.Combine(new HeaderApiVersionReader("x-api-version"));
+               // opt.ApiVersionReader = ApiVersionReader.Combine(new UrlSegmentApiVersionReader());
             });
         }
 

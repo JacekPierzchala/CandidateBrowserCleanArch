@@ -1,5 +1,6 @@
 ﻿using CandidateBrowserCleanArch.Application;
 using CandidateBrowserCleanArch.Domain;
+using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -16,6 +17,8 @@ public class CompanyRepository : GenericRepository<Company>, ICompanyRepository
 
     public async Task<IEnumerable<Company>> GetAllActiveCompaniesAsync()
     {
-        throw new NotImplementedException();
+        var companies = await _dbContext
+                        .Companies.Where(c=>!c.Deleted).ToListAsync();
+        return companies;
     }
 }

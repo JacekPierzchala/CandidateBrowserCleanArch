@@ -14,6 +14,8 @@ public static class PersistenceServicesRegistration
         options.UseSqlServer(configuration.GetConnectionString("CandidatesBrowserConnString")));
         services.AddScoped(typeof(IGenericRepository<>), typeof(GenericRepository<>));
         services.AddScoped<ICandidateRepository, CandidateRepository>();
+        services.AddScoped<ICompanyRepository, CompanyRepository>();
+        services.AddScoped<IProjectRepository, ProjectRepository>();
         services.AddScoped<IUnitOfWork, UnitOfWork>();
         return services;
     

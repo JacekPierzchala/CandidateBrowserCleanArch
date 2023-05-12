@@ -1,0 +1,32 @@
+﻿
+    <RadzenMenu>
+        <AuthorizeView Policy=@PermissionStatics.CandidateRead>
+            <Authorized>
+            <RadzenMenuItem class="m-1" Path="@UrlStatics.home" Text="Home" Icon="home" />
+               <RadzenMenuItem class="m-1" Path="counter" Text="Counter" Icon="home" />
+                <RadzenProfileMenu class="ml-5">
+                    <Template>
+                        <RadzenIcon class="my-2" Icon="person"/>
+                    </Template>
+                    <ChildContent>
+                    <RadzenProfileMenuItem Path="@UrlStatics.logout" Icon="account_circle" Text="Log Out">
+                         </RadzenProfileMenuItem>
+                    </ChildContent>
+                </RadzenProfileMenu>
+            </Authorized>
+            <NotAuthorized>
+         @*       <div class="nav-item px-3">
+                    <NavLink class="nav-link" href="/users/login">
+                        <span class="oi oi-person" aria-hidden="true"></span> Login
+                    </NavLink>
+                </div>*@
+            </NotAuthorized>
+
+        </AuthorizeView>
+
+    </RadzenMenu>
+
+
+@code {
+
+}

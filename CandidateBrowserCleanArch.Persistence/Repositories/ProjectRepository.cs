@@ -1,5 +1,6 @@
 ﻿using CandidateBrowserCleanArch.Application;
 using CandidateBrowserCleanArch.Domain;
+using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -14,8 +15,10 @@ public class ProjectRepository : GenericRepository<Project>, IProjectRepository
     {
     }
 
-    public async Task<IEnumerable<Project>> GetAllActiveProjectAsync()
+    public async Task<IEnumerable<Project>> GetAllActiveProjectsAsync()
     {
-        throw new NotImplementedException();
+        var projects =await _dbContext
+            .Projects.Where(c => !c.Deleted).ToListAsync();
+        return projects;
     }
 }

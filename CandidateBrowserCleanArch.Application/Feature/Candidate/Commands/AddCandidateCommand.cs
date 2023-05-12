@@ -40,7 +40,8 @@ public class AddCandidateCommandHandler : IRequestHandler<AddCandidateCommand, S
         response.Success=await _unitOfWork.SaveAsync();
         if(response.Success)
         {         
-            response.Data = _mapper.Map <CandidateDetailsDto>( await _unitOfWork.CandidateRepository.GetCandidateWithDetailsAsync(candidate.Id));
+            response.Data = _mapper.Map<CandidateDetailsDto>
+                (await _unitOfWork.CandidateRepository.GetCandidateWithDetailsAsync(candidate.Id));
         }    
         else
         {

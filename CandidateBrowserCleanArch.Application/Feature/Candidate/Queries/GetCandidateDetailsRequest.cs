@@ -12,12 +12,14 @@ public class GetCandidateDetailsRequestHandler : IRequestHandler<GetCandidateDet
 {
     private readonly ICandidateRepository _candidateRepository;
     private readonly IMapper _mapper;
+    private readonly IPictureStorageService _pictureStorageService;
 
     public GetCandidateDetailsRequestHandler(ICandidateRepository candidateRepository,
-        IMapper mapper)
+        IMapper mapper, IPictureStorageService pictureStorageService)
     {
         _candidateRepository = candidateRepository;
         _mapper = mapper;
+        _pictureStorageService = pictureStorageService;
     }
     public async Task<ServiceReponse<CandidateDetailsDto>> Handle(GetCandidateDetailsRequest request, CancellationToken cancellationToken)
     {
@@ -28,7 +30,9 @@ public class GetCandidateDetailsRequestHandler : IRequestHandler<GetCandidateDet
             {
                 throw    new NotFoundException(nameof(Candidate), request.CandidateId);               
             }
+            
             response.Data=_mapper.Map<CandidateDetailsDto>(candidate);
+            response.Data.ProfilePath = await _pictureStorageService.GetPicture(response.Data.ProfilePicture);
             response.Success = true;
 
         return response;

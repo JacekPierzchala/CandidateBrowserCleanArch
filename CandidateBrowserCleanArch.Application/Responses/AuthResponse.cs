@@ -9,4 +9,5 @@ namespace CandidateBrowserCleanArch.Application;
 public class AuthResponse:BaseResponse
 {
     public string? Token { get; set; }
+    public string RefreshToken { get; set; }
 }

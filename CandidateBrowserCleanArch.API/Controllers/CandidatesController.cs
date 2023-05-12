@@ -24,8 +24,6 @@ namespace CandidateBrowserCleanArch.API.Controllers
         }
 
         [HttpGet]
-        [ProducesResponseType(200)]
-        [ProducesResponseType(500)]
         [Authorize(Policy = CustomRoleClaims.CandidateRead)]
 
         public async Task<ActionResult<PagedResultResponse<CandidateListDto>>> GetAllCandidates([FromQuery] CandidateQueryParameters queryParameters)
@@ -37,9 +35,6 @@ namespace CandidateBrowserCleanArch.API.Controllers
 
 
         [HttpGet("{id}")]
-        [ProducesResponseType(200)]
-        [ProducesResponseType(500)]
-        [ProducesResponseType(404)]
         [Authorize(Policy = CustomRoleClaims.CandidateRead)]
         public async Task<ActionResult<ServiceReponse<CandidateDetailsDto>>> GetCandidateDetails(int id)
         {
@@ -48,9 +43,6 @@ namespace CandidateBrowserCleanArch.API.Controllers
         }
 
         [HttpPost]
-        [ProducesResponseType(200)]
-        [ProducesResponseType(500)]
-        [ProducesResponseType(400)]
         [Authorize(Policy = CustomRoleClaims.CandidateCreate)]
         public async Task<ActionResult<ServiceReponse<CandidateDetailsDto>>> CreateCandidate([FromBody] CandidateCreateDto createCandidate)
         {
@@ -59,10 +51,6 @@ namespace CandidateBrowserCleanArch.API.Controllers
         }
 
         [HttpPut("{id}")]
-        [ProducesResponseType(200)]
-        [ProducesResponseType(500)]
-        [ProducesResponseType(400)]
-        [ProducesResponseType(404)]
         [Authorize(Policy = CustomRoleClaims.CandidateUpdate)]
         public async Task<ActionResult<ServiceReponse<CandidateDetailsDto>>> UpdateCandidate(int id,[FromBody] CandidateUpdateDto candidateUpdate)
         {
@@ -70,10 +58,6 @@ namespace CandidateBrowserCleanArch.API.Controllers
             return Ok(response);
         }
         [HttpDelete("{id}")]
-        [ProducesResponseType(200)]
-        [ProducesResponseType(500)]
-        [ProducesResponseType(400)]
-        [ProducesResponseType(404)]
         [Authorize(Policy = CustomRoleClaims.CandidateDelete)]
         public async Task<ActionResult<BaseResponse>> DeleteCandidate(int id)
         {

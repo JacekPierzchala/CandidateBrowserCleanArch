@@ -17,8 +17,8 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\CandidateBrowserCleanArch.Application\CandidateBrowserCleanArch.Application.csproj" />
     <ProjectReference Include="..\CandidateBrowserCleanArch.Persistence\CandidateBrowserCleanArch.Persistence.csproj" />
+    <ProjectReference Include="..\CandidateBrowserCleanArch.Tests.MockData\CandidateBrowserCleanArch.Tests.MockData.csproj" />
   </ItemGroup>
 
 </Project>

@@ -23,7 +23,7 @@ namespace CandidateBrowserCleanArch.API.Configurations
         {
             services.AddCors(o =>
             {
-                o.AddPolicy("CorsPolicy",
+                o.AddPolicy("AllowAll",
                     builder => builder.AllowAnyOrigin()
                     .AllowAnyMethod()
                     .AllowAnyHeader());
