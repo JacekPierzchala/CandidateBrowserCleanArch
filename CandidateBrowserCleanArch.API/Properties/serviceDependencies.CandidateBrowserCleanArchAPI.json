@@ -4,13 +4,14 @@
       "secretStore": "AzureAppSettings",
       "resourceId": "/subscriptions/[parameters('subscriptionId')]/resourceGroups/[parameters('resourceGroupName')]/providers/Microsoft.KeyVault/vaults/CandidateBrowserCleanArc",
       "type": "secrets.keyVault",
-      "connectionId": "VaultUri"
+      "connectionId": "VaultUri",
+      "dynamicId": null
     },
-    "mssql2": {
+    "mssql3": {
       "secretStore": "AzureKeyVault",
       "resourceId": "/subscriptions/[parameters('subscriptionId')]/resourceGroups/[parameters('resourceGroupName')]/providers/Microsoft.Sql/servers/candidatebrowsercleanarchdb/databases/CandidateBrowserCleanArch.API_db",
       "type": "mssql.azure",
-      "connectionId": "ConnectionStrings:CandidatesBrowserConnStringAPI"
+      "connectionId": "ConnectionStrings:CandidatesBrowserConnStringWeb"
     }
   }
 }
