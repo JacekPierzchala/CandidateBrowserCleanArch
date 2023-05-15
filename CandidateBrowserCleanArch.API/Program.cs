@@ -5,8 +5,12 @@ using CandidateBrowserCleanArch.Identity;
 using CandidateBrowserCleanArch.Infrastructure;
 using CandidateBrowserCleanArch.Persistence;
 using Serilog;
+using Azure.Identity;
 
 var builder = WebApplication.CreateBuilder(args);
+
+var keyVaultEndpoint = new Uri(Environment.GetEnvironmentVariable("VaultUri"));
+builder.Configuration.AddAzureKeyVault(keyVaultEndpoint, new DefaultAzureCredential());
 
 builder.Services.ConfigureApplicationServices();
 builder.Services.ConfigurePersistenceServices(builder.Configuration);
