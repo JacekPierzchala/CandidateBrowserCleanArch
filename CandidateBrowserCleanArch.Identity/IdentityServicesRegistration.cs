@@ -20,10 +20,11 @@ public static class IdentityServicesRegistration
     public static IServiceCollection ConfigureIdentityServices(this IServiceCollection services,
         IConfiguration configuration)
     {
-        services.Configure<JwtSettings>(configuration.GetSection("JwtSettings"));
+        //services.Configure<JwtSettings>(configuration.GetSection("JwtSettings"));
 
         services.AddDbContext<CandidateBrowserCleanArchIdentityDbContext>(opt =>
-        opt.UseSqlServer(configuration.GetConnectionString("CandidatesBrowserConnString"),
+        //opt.UseSqlServer(configuration.GetConnectionString("CandidatesBrowserConnString"),
+        opt.UseSqlServer(configuration["ConnectionStrings:CandidatesBrowserConnString"],
         build => build.MigrationsAssembly(typeof(CandidateBrowserCleanArchIdentityDbContext).Assembly.FullName)));
 
         services.AddIdentity<ApplicationUser, IdentityRole>(opt => 

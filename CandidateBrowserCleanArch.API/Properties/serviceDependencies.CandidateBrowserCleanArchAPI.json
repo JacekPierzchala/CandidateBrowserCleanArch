@@ -7,11 +7,11 @@
       "connectionId": "VaultUri",
       "dynamicId": null
     },
-    "mssql1": {
+    "mssql4": {
       "secretStore": "AzureAppSettings",
       "resourceId": "/subscriptions/[parameters('subscriptionId')]/resourceGroups/[parameters('resourceGroupName')]/providers/Microsoft.Sql/servers/candidatebrowsercleanarchdb/databases/CandidateBrowserCleanArch.API_db",
       "type": "mssql.azure",
-      "connectionId": "ConnectionStrings:CandidatesBrowserConnString"
+      "connectionId": "CandidatesBrowserConnString"
     }
   }
 }

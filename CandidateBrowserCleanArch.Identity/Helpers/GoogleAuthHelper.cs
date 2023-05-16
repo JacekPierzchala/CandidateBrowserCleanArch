@@ -27,13 +27,14 @@ internal class GoogleAuthHelper : IGoogleAuthHelper
         string challenge = string.Empty;
         using (var sha256 = SHA256.Create())
         {
-            var challengeBytes = sha256.ComputeHash(Encoding.UTF8.GetBytes(_configuration["Authentication:Google:CodeVerifier"]));
+            var challengeBytes = sha256.ComputeHash(Encoding.UTF8.GetBytes(_configuration["GoogleCodeVerifier"]));
             challenge = Base64Url.Encode(challengeBytes);
         }
 
         var parameters = new Dictionary<string, string>
     {
-                { "client_id", _configuration["Authentication:Google:ClientId"] },
+               // { "client_id", _configuration["Authentication:Google:ClientId"] },
+                { "client_id", _configuration["GoogleClientId"] },
                 { "redirect_uri", redirectUri },
                 { "scope", ExternalAuthUrlStatics._googleScopes},
                 { "response_type", "code" },
@@ -54,11 +55,14 @@ internal class GoogleAuthHelper : IGoogleAuthHelper
         var parameters = new Dictionary<string, string>
         {
 
-                    { "client_id", _configuration["Authentication:Google:ClientId"]  },
-                    { "client_secret", _configuration["Authentication:Google:ClientSecret"]  },
+                    //{ "client_id", _configuration["Authentication:Google:ClientId"]  },
+                    { "client_id", _configuration["GoogleClientId"]  },
+                   // { "client_secret", _configuration["Authentication:Google:ClientSecret"]  },
+                    { "client_secret", _configuration["GoogleClientSecret"]  },
                     { "redirect_uri", redirectUri },
                     { "code", authCode },
-                    { "code_verifier", _configuration["Authentication:Google:CodeVerifier"]  },
+                    { "code_verifier", _configuration["GoogleCodeVerifier"]  },
+                    //{ "code_verifier", _configuration["Authentication:Google:CodeVerifier"]  },
                     { "grant_type", "authorization_code" },
 
         };

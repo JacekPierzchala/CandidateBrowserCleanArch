@@ -17,23 +17,25 @@ namespace CandidateBrowserCleanArch.Infrastructure;
 
 public class EmailSenderService : IEmailSenderService
 {
-    private readonly MailJetSettings _mailjetSettings;
-    public EmailSenderService(IOptions<MailJetSettings> mailjetSettings)
-    {
-        _mailjetSettings = mailjetSettings.Value;
-    }
 
+    private readonly IConfiguration _configuration;
+
+
+    public EmailSenderService(IConfiguration configuration)
+    {
+        _configuration = configuration;
+    }
     public async Task<bool> SendEmailAsync(string email, string subject, string htmlMessage)
     {
         try
         {
-            MailjetClient client = new(_mailjetSettings.MailJetApiKey, _mailjetSettings.MailJetSecretKey);
+            MailjetClient client = new(_configuration["MailJetApiKey"], _configuration["MailJetSecretKey"]);
             MailjetRequest request = new MailjetRequest
             {
                 Resource = Send.Resource,
             }
-           .Property(Send.FromEmail, _mailjetSettings.MailJetEmail)
-           .Property(Send.FromName, _mailjetSettings.MailJetSender)
+           .Property(Send.FromEmail, _configuration["MailJetEmail"])
+           .Property(Send.FromName, _configuration["MailJetSender"])
            .Property(Send.Subject, subject)
            .Property(Send.HtmlPart, htmlMessage)
            .Property(Send.Recipients,

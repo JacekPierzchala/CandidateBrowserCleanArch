@@ -33,9 +33,12 @@ internal static class AuthenticationExtensions
                   ValidateAudience = true,
                   ValidateLifetime = true,
                   ClockSkew = TimeSpan.Zero,
-                  ValidIssuer = configuration["JwtSettings:Issuer"],
-                  ValidAudience = configuration["JwtSettings:Audience"],
-                  IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(configuration["JwtSettings:Key"]))
+                  //ValidIssuer = configuration["JwtSettings:Issuer"],
+                  ValidIssuer = configuration["JwtIssuer"],
+                  //ValidAudience = configuration["JwtSettings:Audience"],
+                  ValidAudience = configuration["JwtAudience"],
+                  //IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(configuration["JwtSettings:Key"]))
+                  IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(configuration["JwtKey"]))
               };
           });
 

@@ -14,7 +14,6 @@ namespace CandidateBrowserCleanArch.Infrastructure
     {
         public static IServiceCollection ConfigureInfrastructureServices(this IServiceCollection services, IConfiguration configuration)
         {
-            services.Configure<MailJetSettings>(configuration.GetSection("MailJetSettings"));
             services.AddScoped<IPictureStorageService, PictureStorageService>();
             services.AddScoped<IEmailSenderService, EmailSenderService>();
             return services;

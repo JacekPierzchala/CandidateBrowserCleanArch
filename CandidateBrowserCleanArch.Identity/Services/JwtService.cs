@@ -1,4 +1,5 @@
 ﻿using CandidateBrowserCleanArch.Application;
+using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Options;
 using Microsoft.IdentityModel.Tokens;
 using System.IdentityModel.Tokens.Jwt;
@@ -7,12 +8,13 @@ using System.Security.Cryptography;
 using System.Text;
 
 namespace CandidateBrowserCleanArch.Identity;
-public class JwtService: IJwtService
+public class JwtService : IJwtService
 {
-    private readonly JwtSettings _jwtSettings;
-    public JwtService(IOptions<JwtSettings> jwtSettings)
+    private readonly IConfiguration _configuration;
+
+    public JwtService(IConfiguration configuration)
     {
-        _jwtSettings = jwtSettings.Value;
+        _configuration = configuration;
     }
 
     public string GenerateRefreshToken()
@@ -37,14 +39,16 @@ public class JwtService: IJwtService
                     }
             .Union(userClaims);
 
-        var symmetricSecurityKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_jwtSettings.Key));
+;
+        var symmetricSecurityKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_configuration["JwtKey"]));
         var signingCredentials = new SigningCredentials(symmetricSecurityKey, SecurityAlgorithms.HmacSha256);
 
         var jwtSecurityToken = new JwtSecurityToken
-            (issuer: _jwtSettings.Issuer,
-            audience: _jwtSettings.Audience,
+            (
+            issuer: _configuration["JwtIssuer"],
+            audience: _configuration["JwtAudience"],
             claims: claims,
-            expires: DateTime.UtcNow.AddMinutes(_jwtSettings.DurationInMinutes),
+            expires: DateTime.UtcNow.AddMinutes(Convert.ToInt32(_configuration["JwtDuration"])),
             signingCredentials: signingCredentials
             );
         var token = new JwtSecurityTokenHandler().WriteToken(jwtSecurityToken);
@@ -61,9 +65,9 @@ public class JwtService: IJwtService
             ValidateAudience = true,
             ValidateLifetime = false,
             ClockSkew = TimeSpan.Zero,
-            ValidIssuer = _jwtSettings.Issuer,
-            ValidAudience = _jwtSettings.Audience,
-            IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_jwtSettings.Key))
+            ValidIssuer = _configuration["JwtIssuer"],
+            ValidAudience = _configuration["JwtAudience"],
+            IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_configuration["JwtKey"]))
         };
         var tokenHandler = new JwtSecurityTokenHandler();
         SecurityToken securityToken;
@@ -79,5 +83,5 @@ public class JwtService: IJwtService
         return principal;
     }
 
-   
+
 }
