@@ -16,7 +16,7 @@ internal static class CustomClaimTypes
 internal static class UrlStatics
 {
     internal const string _localAPIHostUrl = "https://localhost:7201/";
-    internal const string _azureAPIHostUrl = "";
+    internal const string _azureAPIHostUrl = "https://candidatebrowsercleanarchapi.azurewebsites.net/";
     internal const string home = "";
     internal const string login = "/users/login";
     internal const string register = "/users/register";

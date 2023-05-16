@@ -52,8 +52,8 @@ public async Task<string> EncryptAsync(string plainText)
 
         using (var aes = Aes.Create())
         {
-            aes.Key = Convert.FromBase64String(_configuration["Encoding:EncodingKey"]);
-            aes.IV = Convert.FromBase64String(_configuration["Encoding:EncodingKey"]);
+            aes.Key = Convert.FromBase64String(_configuration["EncodingKey"]);
+            aes.IV = Convert.FromBase64String(_configuration["EncodingKey"]);
             aes.Mode = CipherMode.CBC;
             aes.Padding = PaddingMode.PKCS7;
 
