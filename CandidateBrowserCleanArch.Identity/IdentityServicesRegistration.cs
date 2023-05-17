@@ -12,19 +12,31 @@ using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.IdentityModel.Tokens;
 using CandidateBrowserCleanArch.Identity.Helpers;
 using System.Net;
+using Microsoft.AspNetCore.Components.WebAssembly.Hosting;
+using Microsoft.AspNetCore.Hosting;
+using Microsoft.Extensions.Hosting;
 
 namespace CandidateBrowserCleanArch.Identity;
 
 public static class IdentityServicesRegistration
 {
     public static IServiceCollection ConfigureIdentityServices(this IServiceCollection services,
-        IConfiguration configuration)
+        IConfiguration configuration, IWebHostEnvironment environment)
     {
-        //services.Configure<JwtSettings>(configuration.GetSection("JwtSettings"));
 
+        var connString=string.Empty;
+        if (environment.IsProduction())
+        {
+            connString=configuration["ConnectionStrings:CandidatesBrowserConnString"];
+        }
+        else
+        {
+            connString=configuration.GetConnectionString("CandidatesBrowserNewDev");
+        }
         services.AddDbContext<CandidateBrowserCleanArchIdentityDbContext>(opt =>
-        //opt.UseSqlServer(configuration.GetConnectionString("CandidatesBrowserConnString"),
-        opt.UseSqlServer(configuration["ConnectionStrings:CandidatesBrowserConnString"],
+
+
+        opt.UseSqlServer(connString,
         build => build.MigrationsAssembly(typeof(CandidateBrowserCleanArchIdentityDbContext).Assembly.FullName)));
 
         services.AddIdentity<ApplicationUser, IdentityRole>(opt => 

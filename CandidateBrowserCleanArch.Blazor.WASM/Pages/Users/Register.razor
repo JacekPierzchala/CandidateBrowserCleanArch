@@ -77,9 +77,7 @@ else
         if (response.Success)
         {
 
-            RegisterViewModel = new();
-
-            NotificationService
+           NotificationService
           .Notify(new NotificationMessage
               {
                   Severity = NotificationSeverity.Success,
@@ -88,6 +86,7 @@ else
                   Detail = $"Registration link has been to {RegisterViewModel.Email}"
               });
 
+            RegisterViewModel = new();
             RegisterProcessSuccess = true;
             RegisterProcessPending = false;
             RouteToLogin();

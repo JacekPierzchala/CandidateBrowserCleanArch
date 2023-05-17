@@ -23,7 +23,7 @@ builder.Services.AddBlazoredSessionStorage();
 
 builder.Services.AddHttpClient<ICandidateBrowserWebAPIClient, CandidateBrowserWebAPIClient>(opt =>
 {
-    opt.BaseAddress = new Uri(UrlStatics._localAPIHostUrl);
+    opt.BaseAddress = new Uri(UrlStatics._azureAPIHostUrl);
     opt.EnableIntercept(builder.Services.BuildServiceProvider());
 });
 
