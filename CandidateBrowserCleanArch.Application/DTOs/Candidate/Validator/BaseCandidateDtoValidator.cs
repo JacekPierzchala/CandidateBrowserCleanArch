@@ -23,6 +23,11 @@ public class BaseCandidateDtoValidator : AbstractValidator<ICandidateDto>
 			.NotEmpty()
 			.WithMessage("{PropertyName} must be provided");
 
-	}
+        RuleFor(model => model.DateOfBirth.Date)
+           .LessThanOrEqualTo(DateTime.Today.Date.AddYears(-18))
+           .WithMessage("Proper Age must be over 18"); ;
+
+    }
+
 }
 

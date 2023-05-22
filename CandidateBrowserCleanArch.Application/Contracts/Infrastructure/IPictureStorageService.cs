@@ -9,4 +9,5 @@ namespace CandidateBrowserCleanArch.Application;
 public interface IPictureStorageService
 {
     Task<string> GetPicture(string fileName);
+    Task<string> UploadPicture(string pictureData, string fileName, string fileNameOld);
 }

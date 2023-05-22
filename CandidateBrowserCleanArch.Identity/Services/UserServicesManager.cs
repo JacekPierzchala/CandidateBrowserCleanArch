@@ -101,8 +101,8 @@ internal class UserServicesManager: IUserServicesManager
         foreach (var role in roleClaims.Select(c => c.Value).Distinct().ToList())
         {
             rolePermissions.Add(new Claim(CustomClaimTypes.Permission, role));
-        }       
-        return roleClaims.Union(rolePermissions);
+        }
+        return rolePermissions;
     }
 
     public async Task<(ApplicationUser? user, IList<string> validationMessages)> ValidateExternalProviderUserAsync(ApplicationUser user)
