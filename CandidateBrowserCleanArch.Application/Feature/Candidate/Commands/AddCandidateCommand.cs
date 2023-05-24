@@ -17,13 +17,16 @@ public class AddCandidateCommandHandler : IRequestHandler<AddCandidateCommand, S
 {
     private readonly IMapper _mapper;
     private readonly IUnitOfWork _unitOfWork;
+    private readonly IPictureStorageService _pictureStorageService;
 
     public AddCandidateCommandHandler(
         IMapper mapper, 
-        IUnitOfWork unitOfWork)
+        IUnitOfWork unitOfWork,
+        IPictureStorageService pictureStorageService)
     {
         _mapper = mapper;
         _unitOfWork = unitOfWork;
+        _pictureStorageService = pictureStorageService;
     }
     public async Task<ServiceReponse<CandidateDetailsDto>> Handle(AddCandidateCommand request, CancellationToken cancellationToken)
     {
@@ -35,6 +38,11 @@ public class AddCandidateCommandHandler : IRequestHandler<AddCandidateCommand, S
             throw new ValidationException(validationResult);
         }
         var candidate = _mapper.Map<Candidate>(request.CreateCandidateDto);
+
+        candidate.ProfilePicture = await _pictureStorageService.UploadPicture
+                (request.CreateCandidateDto.ProfilePictureData, request.CreateCandidateDto.ProfilePicture, null );
+
+        candidate.ProfilePicture = !string.IsNullOrEmpty(candidate.ProfilePicture) ? candidate.ProfilePicture : "avatar.png";
         await _unitOfWork.CandidateRepository.AddAsync(candidate);
 
         response.Success=await _unitOfWork.SaveAsync();

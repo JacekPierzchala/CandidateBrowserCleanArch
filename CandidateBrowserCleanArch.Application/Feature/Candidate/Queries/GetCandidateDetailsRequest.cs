@@ -4,7 +4,7 @@ using MediatR;
 
 namespace CandidateBrowserCleanArch.Application;
 
-public class GetCandidateDetailsRequest:IRequest<ServiceReponse<CandidateDetailsDto>>
+public class GetCandidateDetailsRequest : IRequest<ServiceReponse<CandidateDetailsDto>>
 {
     public int CandidateId { get; set; }
 }
@@ -24,17 +24,15 @@ public class GetCandidateDetailsRequestHandler : IRequestHandler<GetCandidateDet
     public async Task<ServiceReponse<CandidateDetailsDto>> Handle(GetCandidateDetailsRequest request, CancellationToken cancellationToken)
     {
         var response = new ServiceReponse<CandidateDetailsDto>();
+        var candidate = await _candidateRepository.GetCandidateWithDetailsAsync(request.CandidateId);
+        if (candidate == null)
+        {
+            throw new NotFoundException(nameof(Candidate), request.CandidateId);
+        }
 
-            var candidate = await _candidateRepository.GetCandidateWithDetailsAsync(request.CandidateId);
-            if(candidate == null) 
-            {
-                throw    new NotFoundException(nameof(Candidate), request.CandidateId);               
-            }
-            
-            response.Data=_mapper.Map<CandidateDetailsDto>(candidate);
-            response.Data.ProfilePath = await _pictureStorageService.GetPicture(response.Data.ProfilePicture);
-            response.Success = true;
-
+        response.Data = _mapper.Map<CandidateDetailsDto>(candidate);
+        response.Data.ProfilePath = await _pictureStorageService.GetPicture(response.Data.ProfilePicture);
+        response.Success = true;
         return response;
     }
 }

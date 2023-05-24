@@ -32,12 +32,13 @@ public class PictureStorageService : IPictureStorageService
         if (!string.IsNullOrEmpty(pictureData))
         {
             var newFile=await CreateFile(pictureData, fileName);
-            var picName = Path.GetFileName(fileNameOld);
-
-            var path = $"{_webHostEnvironment.WebRootPath}\\profileImages\\{fileNameOld}";
-            if (File.Exists(path) && fileNameOld!= "avatar.png")
+            if(!string.IsNullOrEmpty(fileNameOld))
             {
-                File.Delete(path);
+                var path = $"{_webHostEnvironment.WebRootPath}\\profileImages\\{fileNameOld}";
+                if (File.Exists(path) && fileNameOld != "avatar.png")
+                {
+                    File.Delete(path);
+                }
             }
             return  newFile;
         }

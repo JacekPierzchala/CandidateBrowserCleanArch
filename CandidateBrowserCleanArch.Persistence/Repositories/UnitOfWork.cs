@@ -13,6 +13,8 @@ internal sealed class UnitOfWork : IUnitOfWork
     private readonly ICandidateRepository _candidateRepository;
     private readonly ICompanyRepository _companyRepository;
     private readonly IProjectRepository _projectRepository;
+    private readonly ICandidateCompanyRepository _candidateCompanyRepository;
+    private readonly ICandidateProjectRepository _candidateProjectRepository;
 
     public UnitOfWork(CandidatesBrowserDbContext dbContext)
     {
@@ -23,6 +25,8 @@ internal sealed class UnitOfWork : IUnitOfWork
     public ICompanyRepository CompanyRepository => _companyRepository ?? new CompanyRepository(_dbContext);
 
     public IProjectRepository ProjectRepository => _projectRepository?? new ProjectRepository(_dbContext);  
+    public ICandidateCompanyRepository CandidateCompanyRepository => _candidateCompanyRepository ?? new CandidateCompanyRepository(_dbContext);  
+    public ICandidateProjectRepository CandidateProjectRepository => _candidateProjectRepository ?? new CandidateProjectRepository(_dbContext);  
 
     public void Dispose()
     {
@@ -39,7 +43,6 @@ internal sealed class UnitOfWork : IUnitOfWork
         catch 
         {
             return false;
-
         }
 
     }

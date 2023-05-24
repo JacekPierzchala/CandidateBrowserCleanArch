@@ -30,8 +30,6 @@ public class GetActiveCompaniesRequestHandler :
         var result = await _companyRepository.GetAllActiveCompaniesAsync();
         response.Data=_mapper.Map<IEnumerable<ReadCompanyDto>>(result);
         response.Success = true;
-
-
         return response;
     }
 }

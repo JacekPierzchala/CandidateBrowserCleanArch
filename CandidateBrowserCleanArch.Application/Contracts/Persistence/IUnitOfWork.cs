@@ -11,5 +11,8 @@ public interface IUnitOfWork:IDisposable
     ICandidateRepository CandidateRepository { get; }
     ICompanyRepository CompanyRepository { get; }
     IProjectRepository  ProjectRepository { get; }
+    
+    ICandidateCompanyRepository CandidateCompanyRepository { get; }
+    ICandidateProjectRepository CandidateProjectRepository { get; }
     Task<bool> SaveAsync();
 }

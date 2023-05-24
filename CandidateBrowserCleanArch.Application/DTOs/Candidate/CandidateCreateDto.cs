@@ -13,5 +13,6 @@ public class CandidateCreateDto: ICandidateDto
     public string? Description { get; set; }
     public string? Email { get; set; }
     public string? ProfilePicture { get; set; }
+    public string? ProfilePictureData { get; set; }
     public DateTime DateOfBirth { get; set; }
 }

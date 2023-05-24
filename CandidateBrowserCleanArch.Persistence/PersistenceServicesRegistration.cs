@@ -28,6 +28,8 @@ public static class PersistenceServicesRegistration
         services.AddScoped<ICandidateRepository, CandidateRepository>();
         services.AddScoped<ICompanyRepository, CompanyRepository>();
         services.AddScoped<IProjectRepository, ProjectRepository>();
+        services.AddScoped<ICandidateCompanyRepository, CandidateCompanyRepository>();
+        services.AddScoped<ICandidateProjectRepository, CandidateProjectRepository>();
         services.AddScoped<IUnitOfWork, UnitOfWork>();
         return services;
     

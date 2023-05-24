@@ -16,8 +16,20 @@ public class MappingProfile : Profile
             .ForMember(cc => cc.Company, c => c.MapFrom(map => map.Company))
         .ReverseMap();
 
+        CreateMap<CandidateCompany, CandidateCompanyAddDto>()
+        .ReverseMap();
+
+        CreateMap<CandidateCompany, CandidateCompanyUpdateDto>()
+        .ReverseMap();
+
         CreateMap<CandidateProjectDto, CandidateProject>()
         .ForMember(cc => cc.Project, c => c.MapFrom(map => map.Project))
+        .ReverseMap();
+
+        CreateMap<CandidateProject, CandidateProjectAddDto>()
+        .ReverseMap();
+
+        CreateMap<CandidateProject, CandidateProjectUpdateDto>()
         .ReverseMap();
 
         CreateMap<Candidate, CandidateListDto>()

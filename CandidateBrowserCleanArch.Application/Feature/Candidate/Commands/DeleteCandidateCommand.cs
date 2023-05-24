@@ -1,11 +1,6 @@
 ﻿using CandidateBrowserCleanArch.Application;
 using CandidateBrowserCleanArch.Domain;
 using MediatR;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace CandidateBrowserCleanArch.Applicationl
 {
@@ -36,7 +31,7 @@ namespace CandidateBrowserCleanArch.Applicationl
             {
                 throw new Exception("Error occurred during this operation");
             }
-            
+            response.Data = true;
             return response;
         }
     }
