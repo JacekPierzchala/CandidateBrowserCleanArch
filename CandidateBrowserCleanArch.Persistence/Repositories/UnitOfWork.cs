@@ -1,4 +1,5 @@
 ﻿using CandidateBrowserCleanArch.Application;
+using Microsoft.AspNetCore.Http;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -10,15 +11,18 @@ namespace CandidateBrowserCleanArch.Persistence;
 internal sealed class UnitOfWork : IUnitOfWork
 {
     private readonly CandidatesBrowserDbContext _dbContext;
+    private readonly IHttpContextAccessor _httpContextAccessor;
     private readonly ICandidateRepository _candidateRepository;
     private readonly ICompanyRepository _companyRepository;
     private readonly IProjectRepository _projectRepository;
     private readonly ICandidateCompanyRepository _candidateCompanyRepository;
     private readonly ICandidateProjectRepository _candidateProjectRepository;
 
-    public UnitOfWork(CandidatesBrowserDbContext dbContext)
+    public UnitOfWork(CandidatesBrowserDbContext dbContext,
+        IHttpContextAccessor httpContextAccessor)
     {
         _dbContext = dbContext;
+        _httpContextAccessor = httpContextAccessor;
     }
     public ICandidateRepository CandidateRepository => _candidateRepository?? new CandidateRepository(_dbContext);
 
@@ -35,15 +39,17 @@ internal sealed class UnitOfWork : IUnitOfWork
 
     public async Task<bool> SaveAsync()
     {
-        try
-        {
-            await _dbContext.SaveChangesAsync();
-            return true;
-        }
-        catch 
-        {
-            return false;
-        }
+        var userName = _httpContextAccessor.HttpContext.User.FindFirst(CustomClaimTypes.Uid)?.Value;
+        return await _dbContext.SaveChangesAsync(userName);
+        //try
+        //{
+        //    await _dbContext.SaveChangesAsync();
+        //    return true;
+        //}
+        //catch 
+        //{
+        //    return false;
+        //}
 
     }
 }

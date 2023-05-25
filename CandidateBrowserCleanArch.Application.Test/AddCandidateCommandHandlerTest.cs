@@ -29,7 +29,7 @@ namespace CandidateBrowserCleanArch.Application.Test
             // Arrange
             var request = new AddCandidateCommand();
             _unitOfWork = CandidateRepositoryMock.GetUnitofWork();
-            _handler = new AddCandidateCommandHandler(_mapper, _unitOfWork.Object);
+            _handler = new AddCandidateCommandHandler(_mapper, _unitOfWork.Object, _pictureStorageServiceMock.Object);
 
             request.CreateCandidateDto = new()
             {
@@ -67,7 +67,7 @@ namespace CandidateBrowserCleanArch.Application.Test
                 }
             };
             _unitOfWork = CandidateRepositoryMock.GetUnitofWork();
-            _handler = new AddCandidateCommandHandler(_mapper, _unitOfWork.Object);
+            _handler = new AddCandidateCommandHandler(_mapper, _unitOfWork.Object, _pictureStorageServiceMock.Object);
 
             // Act &Assert 
             await Assert.ThrowsExceptionAsync<ValidationException>(() => _handler.Handle(request, CancellationToken.None));

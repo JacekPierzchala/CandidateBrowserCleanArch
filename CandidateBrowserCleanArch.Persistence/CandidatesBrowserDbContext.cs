@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 
 namespace CandidateBrowserCleanArch.Persistence;
 
-public class CandidatesBrowserDbContext : DbContext
+public class CandidatesBrowserDbContext : AuditableDbContext
 {
     public CandidatesBrowserDbContext(DbContextOptions<CandidatesBrowserDbContext> dbContext)
         : base(dbContext) { }

@@ -27,7 +27,7 @@ namespace CandidateBrowserCleanArch.Application.Test
             request.CandidateId = 6;
             CandidateRepositoryMock.CandidateId = request.CandidateId;
             _candidateRepositoryMock = CandidateRepositoryMock.GetCandidateRepository();
-            _handler = new GetCandidateDetailsRequestHandler(_candidateRepositoryMock.Object, _mapper);
+            _handler = new GetCandidateDetailsRequestHandler(_candidateRepositoryMock.Object, _mapper, _pictureStorageServiceMock.Object);
             
             // Act
             var result = await _handler.Handle(request, CancellationToken.None);
@@ -45,7 +45,7 @@ namespace CandidateBrowserCleanArch.Application.Test
             request.CandidateId = 10;
             _candidateRepositoryMock = CandidateRepositoryMock.GetCandidateRepository();
             CandidateRepositoryMock.CandidateId = request.CandidateId;
-            _handler = new GetCandidateDetailsRequestHandler(_candidateRepositoryMock.Object, _mapper);
+            _handler = new GetCandidateDetailsRequestHandler(_candidateRepositoryMock.Object, _mapper, _pictureStorageServiceMock.Object);
 
             // Act & Assert
             await Assert.ThrowsExceptionAsync<NotFoundException>(() => _handler.Handle(request, CancellationToken.None));

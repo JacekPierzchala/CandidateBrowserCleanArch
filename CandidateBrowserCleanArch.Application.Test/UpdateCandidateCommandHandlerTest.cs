@@ -38,7 +38,7 @@ namespace CandidateBrowserCleanArch.Application.Test
                 Email = "John.Doe@gmail.com",
 
             };
-            _handler = new(_mapper,_unitOfWork.Object);
+            _handler = new(_mapper,_unitOfWork.Object, _pictureStorageServiceMock.Object);
 
             //Act
             var result = await _handler.Handle(request, CancellationToken.None);
@@ -66,7 +66,7 @@ namespace CandidateBrowserCleanArch.Application.Test
                 Email = "John.Johnsom@gmail.com",
             };
 
-            _handler = new(_mapper, _unitOfWork.Object);
+            _handler = new(_mapper, _unitOfWork.Object, _pictureStorageServiceMock.Object);
 
             //Act & Assert
             await Assert.ThrowsExceptionAsync<BadRequestException>(() => _handler.Handle(request, CancellationToken.None));
@@ -89,7 +89,7 @@ namespace CandidateBrowserCleanArch.Application.Test
                 LastName = "Doe",
                 Email = "John.Johnsom@gmail.com",
             }; 
-            _handler = new(_mapper, _unitOfWork.Object);
+            _handler = new(_mapper, _unitOfWork.Object, _pictureStorageServiceMock.Object);
 
             //Act & Assert
             await Assert.ThrowsExceptionAsync<ValidationException>(() => _handler.Handle(request, CancellationToken.None));
@@ -111,7 +111,7 @@ namespace CandidateBrowserCleanArch.Application.Test
                 Email = "John.Johnsom@gmail.com",
             }; ;
 
-            _handler = new(_mapper, _unitOfWork.Object);
+            _handler = new(_mapper, _unitOfWork.Object, _pictureStorageServiceMock.Object);
 
             //Act & Assert
             await Assert.ThrowsExceptionAsync<NotFoundException>(() => _handler.Handle(request, CancellationToken.None));
