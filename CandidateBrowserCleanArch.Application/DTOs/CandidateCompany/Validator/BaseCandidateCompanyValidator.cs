@@ -20,9 +20,14 @@ public class BaseCandidateCompanyValidator:AbstractValidator<ICandidateCompanyDt
         RuleFor(c=>c.CandidateId).NotEmpty().NotNull();
 		RuleFor(c=>c.CompanyId).NotEmpty().NotNull();
 		RuleFor(c=>c.Position).NotEmpty().NotNull(); ;
-		RuleFor(c=>c.DateStart).NotEmpty().NotNull(); 
-		RuleFor(c => c.DateStart.Date).LessThanOrEqualTo(c => c.DateEnd.Value.Date);
-        RuleFor(c => c.DateEnd.Value.Date).GreaterThanOrEqualTo(c => c.DateStart.Date);
+		RuleFor(c=>c.DateStart).NotEmpty().NotNull();
+        When(c => c.DateEnd.HasValue, () => 
+        {
+            RuleFor(c => c.DateStart.Date).LessThanOrEqualTo(c => c.DateEnd.Value.Date);
+            RuleFor(c => c.DateEnd.Value.Date).GreaterThanOrEqualTo(c => c.DateStart.Date);
+        });
+       
+      
 
         RuleFor(c => c.CandidateId).MustAsync(async (id,token) => 
         {

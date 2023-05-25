@@ -28,7 +28,7 @@ public class AddCandidateProjectCommandHandler :
     public async Task<ServiceReponse<CandidateProjectDto>> Handle(AddCandidateProjectCommand request, CancellationToken cancellationToken)
     {
         var response = new ServiceReponse<CandidateProjectDto>();
-        var validator = new CandidateProjectAddDtoValidator(_unitOfWork.CandidateRepository, _unitOfWork.ProjectRepository);
+        var validator = new CandidateProjectAddDtoValidator(_unitOfWork.CandidateRepository, _unitOfWork.ProjectRepository,_unitOfWork.CandidateProjectRepository);
         var validationResult = await validator.ValidateAsync(request.CandidateProjectAddDto, cancellationToken);
         if (!validationResult.IsValid)
         {

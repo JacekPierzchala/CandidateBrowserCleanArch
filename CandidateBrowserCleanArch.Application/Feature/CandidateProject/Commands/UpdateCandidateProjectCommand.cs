@@ -29,7 +29,9 @@ public class UpdateCandidateProjectCommandHandler :
         {
             throw new BadRequestException("Inconsistent Id");
         }
-        var validator = new CandidateProjectUpdateDtoValidator(_unitOfWork.CandidateRepository, _unitOfWork.ProjectRepository);
+        var validator = new CandidateProjectUpdateDtoValidator(_unitOfWork.CandidateRepository, 
+            _unitOfWork.ProjectRepository, _unitOfWork.CandidateProjectRepository);
+
         var validationResult = await validator.ValidateAsync(request.CandidateProjectUpdateDto, cancellationToken);
         if (!validationResult.IsValid)
         {

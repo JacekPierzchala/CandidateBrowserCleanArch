@@ -17,6 +17,7 @@ internal class BaseCandidateProjectValidator:AbstractValidator<ICandidateProject
 	{
         _candidateRepository = candidateRepository;
         _projectRepository = projectRepository;
+ 
         RuleFor(c => c.CandidateId).NotEmpty().NotNull();
         RuleFor(c => c.ProjectId).NotEmpty().NotNull();
         RuleFor(c => c.ProjectId).MustAsync(async (id, token) =>
