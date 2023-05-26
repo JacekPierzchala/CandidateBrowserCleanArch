@@ -48,9 +48,11 @@ public class UpdateCandidateCommandHandler : IRequestHandler<UpdateCandidateComm
         }
 
         _mapper.Map(request.CandidateUpdate, candidate);
-
-        candidate.ProfilePicture=await _pictureStorageService.UploadPicture
-                (request.CandidateUpdate.ProfilePictureData, request.CandidateUpdate.ProfilePicture, request.CandidateUpdate.ProfilePictureOld);
+        if(request.CandidateUpdate.ProfilePictureData!=null)
+        {
+            candidate.ProfilePicture = await _pictureStorageService.UploadPicture
+                         (request.CandidateUpdate.ProfilePictureData, request.CandidateUpdate.ProfilePicture, request.CandidateUpdate.ProfilePictureOld);
+        }
 
         candidate.ProfilePicture = !string.IsNullOrEmpty(candidate.ProfilePicture) ? candidate.ProfilePicture : "avatar.png";
         await _unitOfWork.CandidateRepository.UpdateAsync(candidate);
