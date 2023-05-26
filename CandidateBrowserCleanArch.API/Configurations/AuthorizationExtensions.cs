@@ -16,6 +16,16 @@ namespace CandidateBrowserCleanArch.API.Configurations
                     policy.RequireClaim(CustomClaimTypes.Permission, CustomRoleClaims.CandidateCreate));
                 options.AddPolicy(CustomRoleClaims.CandidateUpdate, policy =>
                     policy.RequireClaim(CustomClaimTypes.Permission, CustomRoleClaims.CandidateUpdate));
+
+
+                options.AddPolicy(CustomRoleClaims.UserAssignRole, policy =>
+                    policy.RequireClaim(CustomClaimTypes.Permission, CustomRoleClaims.UserAssignRole));
+                options.AddPolicy(CustomRoleClaims.UserDelete, policy =>
+                    policy.RequireClaim(CustomClaimTypes.Permission, CustomRoleClaims.UserDelete));
+                options.AddPolicy(CustomRoleClaims.UserLock, policy =>
+                    policy.RequireClaim(CustomClaimTypes.Permission, CustomRoleClaims.UserLock));
+                options.AddPolicy(CustomRoleClaims.UserUpdate, policy =>
+                    policy.RequireClaim(CustomClaimTypes.Permission, CustomRoleClaims.UserUpdate));
             });
 
         }

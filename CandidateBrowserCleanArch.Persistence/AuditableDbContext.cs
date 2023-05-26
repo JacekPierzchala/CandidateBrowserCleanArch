@@ -19,11 +19,11 @@ namespace CandidateBrowserCleanArch.Persistence
             foreach (var entry in base.ChangeTracker.Entries<IAuditableEntity>()
                 .Where(q => q.State == EntityState.Modified || q.State == EntityState.Added))
             {
-                entry.Entity.ModifiedDate = DateTime.Now;
+                entry.Entity.ModifiedDate = DateTime.UtcNow;
                 entry.Entity.ModifiedBy = username;
                 if (entry.State == EntityState.Added)
                 {
-                    entry.Entity.CreatedDate = DateTime.Now;
+                    entry.Entity.CreatedDate = DateTime.UtcNow;
                     entry.Entity.CreatedBy = username;
                 }
             }

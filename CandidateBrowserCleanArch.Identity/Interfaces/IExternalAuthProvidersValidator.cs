@@ -1,4 +1,4 @@
-﻿namespace CandidateBrowserCleanArch.Identity;
+﻿namespace CandidateBrowserCleanArch.Identity.Interfaces;
 
 internal interface IExternalAuthProvidersValidator
 {

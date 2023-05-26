@@ -1,7 +1,8 @@
 ﻿using CandidateBrowserCleanArch.Application;
 using CandidateBrowserCleanArch.Identity.Helpers;
+using CandidateBrowserCleanArch.Identity.Interfaces;
 
-namespace CandidateBrowserCleanArch.Identity;
+namespace CandidateBrowserCleanArch.Identity.Services.Auth;
 
 internal class AuthService : IAuthService
 {
@@ -36,7 +37,7 @@ internal class AuthService : IAuthService
         user.RefreshToken = _jwtService.GenerateRefreshToken();
 
         await _userServicesManager.UpdateUser(user);
-        var userClaims=await _userServicesManager.GatherUserClaims(user);
+        var userClaims = await _userServicesManager.GatherUserClaims(user);
 
         response.Token = _jwtService.GenerateToken(user, userClaims);
         response.RefreshToken = user.RefreshToken;
@@ -51,12 +52,12 @@ internal class AuthService : IAuthService
 
         var token = await _googleAuthHelper.GetAccessTokenAsync(authCode, redirectUrl);
 
-        var validationResult= await _externalAuthProvidersValidator.ValidateGoogleToken(token);
-        if(validationResult.user is null)
+        var validationResult = await _externalAuthProvidersValidator.ValidateGoogleToken(token);
+        if (validationResult.user is null)
         {
             response.Message = validationResult.message;
             return response;
-        }           
+        }
         var result = await _userServicesManager.ValidateExternalProviderUserAsync(validationResult.user);
         if (result.user == null)
         {
@@ -81,18 +82,18 @@ internal class AuthService : IAuthService
         var response = new AuthResponse();
 
         var principal = _jwtService.GetPrincipalFromExpiredToken(request.Token);
-        var validationRequest=await _userServicesManager.ValidateUserAndToken(principal.Identity.Name, request.RefreshToken);
-        if(validationRequest.user == null) 
-        { 
-            response.Message=validationRequest.validationMessage;
+        var validationRequest = await _userServicesManager.ValidateUserAndToken(principal.Identity.Name, request.RefreshToken);
+        if (validationRequest.user == null)
+        {
+            response.Message = validationRequest.validationMessage;
             return response;
         }
-        var user=validationRequest.user;
+        var user = validationRequest.user;
         var userClaims = await _userServicesManager.GatherUserClaims(user);
 
         response.Token = _jwtService.GenerateToken(user, userClaims);
         user.RefreshToken = _jwtService.GenerateRefreshToken();
-        await _userServicesManager.UpdateUser(user);    
+        await _userServicesManager.UpdateUser(user);
 
         response.RefreshToken = user.RefreshToken;
         response.Success = true;
@@ -112,16 +113,16 @@ internal class AuthService : IAuthService
 
         var response = new RegistrationResponse();
 
-        var result=await _userServicesManager.ValidateAndRegisterUserAsync(user, request.Password);
-        if(result.user==null)
+        var result = await _userServicesManager.ValidateAndRegisterUserAsync(user, request.Password);
+        if (result.user == null)
         {
             result.validationMessages.ToList().ForEach(error => response.Errors.Add(error));
             return response;
         }
         response.UserId = user.Id;
 
-        var tokenAttempt=await _userServicesManager.CreateConfirmEmailToken(user);
-        if(!string.IsNullOrEmpty(tokenAttempt.encryptedEmailToken))
+        var tokenAttempt = await _userServicesManager.CreateConfirmEmailToken(user);
+        if (!string.IsNullOrEmpty(tokenAttempt.encryptedEmailToken))
         {
             response.Success = true;
             response.Message = $"{user.Email} registration success";
@@ -140,15 +141,15 @@ internal class AuthService : IAuthService
         var response = new ServiceReponse<string>();
         try
         {
-            response.Data= _googleAuthHelper.GetGoogleUrl(redirectUrl);
+            response.Data = _googleAuthHelper.GetGoogleUrl(redirectUrl);
             response.Success = true;
         }
         catch (Exception ex)
         {
-            response.Data = redirectUrl; 
+            response.Data = redirectUrl;
             response.Success = false;
             response.Message = ex.Message;
-        
+
         }
         return response;
 
@@ -157,7 +158,7 @@ internal class AuthService : IAuthService
     public async Task<ServiceReponse<bool>> ConfirmEmail(ConfirmEmailRequest request)
     {
         var response = new ServiceReponse<bool>();
-        response.Success=await _userServicesManager.ValidateAndConfirmEmail(request.UserId, request.Token);
+        response.Success = await _userServicesManager.ValidateAndConfirmEmail(request.UserId, request.Token);
         return response;
     }
 
@@ -169,14 +170,14 @@ internal class AuthService : IAuthService
         {
             response.Success = true;
             response.ValidToken = tokenAttempt.encryptedEmailToken;
-            response.EncryptedUserId = tokenAttempt.encryptedUserId;           
+            response.EncryptedUserId = tokenAttempt.encryptedUserId;
         }
         else
         {
             response.Message = $"{tokenAttempt.validationMessage}";
         }
         return response;
-        
+
     }
 
     public async Task<ForgotPasswordResponse> ForgotPassword(ForgotPasswordRequest request)
@@ -199,8 +200,8 @@ internal class AuthService : IAuthService
 
     public async Task<ServiceReponse<bool>> ResetPassword(ResetPasswordRequest request)
     {
-        var response = new ServiceReponse<bool>();            
-        var result = await _userServicesManager.ValidateAndResetPassword(request.UserId, request.Token,request.NewPassword);
+        var response = new ServiceReponse<bool>();
+        var result = await _userServicesManager.ValidateAndResetPassword(request.UserId, request.Token, request.NewPassword);
         response.Success = result.result;
         response.Message = result.message;
 

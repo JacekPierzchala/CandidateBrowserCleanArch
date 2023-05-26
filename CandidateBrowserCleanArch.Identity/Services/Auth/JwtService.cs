@@ -1,4 +1,5 @@
 ﻿using CandidateBrowserCleanArch.Application;
+using CandidateBrowserCleanArch.Identity.Interfaces;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Options;
 using Microsoft.IdentityModel.Tokens;
@@ -7,7 +8,7 @@ using System.Security.Claims;
 using System.Security.Cryptography;
 using System.Text;
 
-namespace CandidateBrowserCleanArch.Identity;
+namespace CandidateBrowserCleanArch.Identity.Services.Auth;
 public class JwtService : IJwtService
 {
     private readonly IConfiguration _configuration;
@@ -39,7 +40,7 @@ public class JwtService : IJwtService
                     }
             .Union(userClaims);
 
-;
+        ;
         var symmetricSecurityKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_configuration["JwtKey"]));
         var signingCredentials = new SigningCredentials(symmetricSecurityKey, SecurityAlgorithms.HmacSha256);
 

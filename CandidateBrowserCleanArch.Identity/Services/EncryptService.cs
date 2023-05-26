@@ -1,4 +1,5 @@
-﻿using Microsoft.Extensions.Configuration;
+﻿using CandidateBrowserCleanArch.Identity.Interfaces;
+using Microsoft.Extensions.Configuration;
 using System.Security.Cryptography;
 
 namespace CandidateBrowserCleanArch.Identity;

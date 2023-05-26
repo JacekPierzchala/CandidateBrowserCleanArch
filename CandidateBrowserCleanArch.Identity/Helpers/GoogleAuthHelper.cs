@@ -33,7 +33,6 @@ internal class GoogleAuthHelper : IGoogleAuthHelper
 
         var parameters = new Dictionary<string, string>
     {
-               // { "client_id", _configuration["Authentication:Google:ClientId"] },
                 { "client_id", _configuration["GoogleClientId"] },
                 { "redirect_uri", redirectUri },
                 { "scope", ExternalAuthUrlStatics._googleScopes},
@@ -55,14 +54,11 @@ internal class GoogleAuthHelper : IGoogleAuthHelper
         var parameters = new Dictionary<string, string>
         {
 
-                    //{ "client_id", _configuration["Authentication:Google:ClientId"]  },
                     { "client_id", _configuration["GoogleClientId"]  },
-                   // { "client_secret", _configuration["Authentication:Google:ClientSecret"]  },
                     { "client_secret", _configuration["GoogleClientSecret"]  },
                     { "redirect_uri", redirectUri },
                     { "code", authCode },
                     { "code_verifier", _configuration["GoogleCodeVerifier"]  },
-                    //{ "code_verifier", _configuration["Authentication:Google:CodeVerifier"]  },
                     { "grant_type", "authorization_code" },
 
         };

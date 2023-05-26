@@ -1,10 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace CandidateBrowserCleanArch.Application;
+﻿namespace CandidateBrowserCleanArch.Application;
 
 public static class CustomClaimTypes
 {
@@ -19,4 +13,9 @@ public static class CustomRoleClaims
     public const string CandidateDelete = "Candidate.Delete";
     public const string CandidateRead = "Candidate.Read";
     public const string CandidateUpdate = "Candidate.Update";
+
+    public const string UserAssignRole = "User.AssignRole";
+    public const string UserDelete = "User.Delete";
+    public const string UserLock = "User.Lock";
+    public const string UserUpdate = "User.Update";
 }

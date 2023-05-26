@@ -1,14 +1,16 @@
 ﻿using CandidateBrowserCleanArch.Application;
+using CandidateBrowserCleanArch.Identity.Interfaces;
 using IdentityModel;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.WebUtilities;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using System.Security.Claims;
 using System.Security.Cryptography;
 using System.Text;
 
-namespace CandidateBrowserCleanArch.Identity;
-internal class UserServicesManager: IUserServicesManager
+namespace CandidateBrowserCleanArch.Identity.Services.Auth;
+internal class UserServicesManager : IUserServicesManager
 {
     private readonly UserManager<ApplicationUser> _userManager;
     private readonly SignInManager<ApplicationUser> _signInManager;
@@ -27,7 +29,7 @@ internal class UserServicesManager: IUserServicesManager
         _encryptService = encryptService;
     }
 
-    public async Task<(ApplicationUser? user, string validationMessage)>ValidateUserAndToken(string username, string refreshToken)
+    public async Task<(ApplicationUser? user, string validationMessage)> ValidateUserAndToken(string username, string refreshToken)
     {
         var user = await _userManager.FindByEmailAsync(username);
         if (user == null || user.RefreshToken != refreshToken || user.RefreshTokenExpiryTime <= DateTime.UtcNow)
@@ -39,7 +41,7 @@ internal class UserServicesManager: IUserServicesManager
 
     public async Task UpdateUser(ApplicationUser user)
                  => await _userManager.UpdateAsync(user);
-   
+
     public async Task<(ApplicationUser? user, string validationMessage)> ValidateAndLoginUserAsync(string userName, string password)
     {
         var user = await _userManager.FindByEmailAsync(userName);
@@ -58,7 +60,7 @@ internal class UserServicesManager: IUserServicesManager
         return (user, string.Empty);
     }
 
-    public async Task<(ApplicationUser? user, IList<string>validationMessages)> ValidateAndRegisterUserAsync
+    public async Task<(ApplicationUser? user, IList<string> validationMessages)> ValidateAndRegisterUserAsync
         (ApplicationUser user, string password)
     {
         List<string> validationMessages = new();
@@ -110,7 +112,7 @@ internal class UserServicesManager: IUserServicesManager
         List<string> validationMessages = new();
         var existingUser = await _userManager.FindByEmailAsync(user.Email);
 
-        if (existingUser == null) 
+        if (existingUser == null)
         {
             var result = await _userManager.CreateAsync(user);
             if (!result.Succeeded)
@@ -118,11 +120,11 @@ internal class UserServicesManager: IUserServicesManager
                 result.Errors.ToList().ForEach(error => validationMessages.Add(error.Description));
                 return (null, validationMessages);
             }
-            await _userManager.AddToRoleAsync(user, "User");           
+            await _userManager.AddToRoleAsync(user, "User");
         }
- 
-        await _signInManager.SignInAsync(existingUser??user, false);
-        if(existingUser!=null)
+
+        await _signInManager.SignInAsync(existingUser ?? user, false);
+        if (existingUser != null)
         {
             existingUser.DateLogged = DateTime.UtcNow;
             existingUser.RefreshTokenExpiryTime = DateTime.UtcNow.AddDays(7);
@@ -130,31 +132,31 @@ internal class UserServicesManager: IUserServicesManager
         else
         {
             user.DateLogged = DateTime.UtcNow;
-            user.RefreshTokenExpiryTime=DateTime.UtcNow.AddDays(7);
+            user.RefreshTokenExpiryTime = DateTime.UtcNow.AddDays(7);
         }
-        return (existingUser ??user, null);
+        return (existingUser ?? user, null);
     }
 
-    public async Task<(string encryptedEmailToken,string encryptedUserId, string validationMessage)> CreateConfirmEmailToken(ApplicationUser user)
+    public async Task<(string encryptedEmailToken, string encryptedUserId, string validationMessage)> CreateConfirmEmailToken(ApplicationUser user)
     {
         try
         {
             var confirmEmailToken = await _userManager.GenerateEmailConfirmationTokenAsync(user);
-           
+
             var encryptedEmailToken = await _encryptService.EncryptAsync(confirmEmailToken);
             var encryptedUserId = await _encryptService.EncryptAsync(user.Id);
             return (encryptedEmailToken, encryptedUserId, string.Empty);
         }
         catch (Exception ex)
         {
-            return (string.Empty,string.Empty, ex.Message);
-        }      
+            return (string.Empty, string.Empty, ex.Message);
+        }
     }
 
     public async Task<(string encryptedEmailToken, string encryptedUserId, string validationMessage)> CreateConfirmEmailToken(string email)
     {
-        var user =await _userManager.FindByEmailAsync(email);
-        if(user!=null)
+        var user = await _userManager.FindByEmailAsync(email);
+        if (user != null)
         {
             return await CreateConfirmEmailToken(user);
         }
@@ -166,13 +168,13 @@ internal class UserServicesManager: IUserServicesManager
     {
         try
         {
-            var decrypteduserId=await _encryptService.DecryptAsync(userId);
+            var decrypteduserId = await _encryptService.DecryptAsync(userId);
             var user = await _userManager.FindByIdAsync(decrypteduserId);
             if (user != null)
             {
                 var decryptedToken = await _encryptService.DecryptAsync(token);
                 var result = await _userManager.ConfirmEmailAsync(user, decryptedToken);
-          
+
                 if (result.Succeeded)
                 {
                     return true;
@@ -200,7 +202,7 @@ internal class UserServicesManager: IUserServicesManager
         return (string.Empty, string.Empty, $"User {email} not found");
     }
 
-    public async Task<(bool result,string message)> ValidateAndResetPassword(string userId, string token, string newPassword)
+    public async Task<(bool result, string message)> ValidateAndResetPassword(string userId, string token, string newPassword)
     {
         try
         {
@@ -209,18 +211,18 @@ internal class UserServicesManager: IUserServicesManager
             if (user != null)
             {
                 var decryptedToken = await _encryptService.DecryptAsync(token);
-                var result = await _userManager.ResetPasswordAsync(user, decryptedToken, newPassword);              
+                var result = await _userManager.ResetPasswordAsync(user, decryptedToken, newPassword);
                 if (result.Succeeded)
                 {
-                    return (true,string.Empty);
+                    return (true, string.Empty);
                 }
 
             }
-            return  (false, "Reset password failed. Please resend request using forgot password module");
+            return (false, "Reset password failed. Please resend request using forgot password module");
         }
-        catch(Exception ex)
+        catch (Exception ex)
         {
-            return  (false, ex.Message); 
+            return (false, ex.Message);
         }
     }
 }

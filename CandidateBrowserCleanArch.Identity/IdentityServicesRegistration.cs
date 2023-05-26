@@ -15,6 +15,9 @@ using System.Net;
 using Microsoft.AspNetCore.Components.WebAssembly.Hosting;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Hosting;
+using CandidateBrowserCleanArch.Identity.Interfaces;
+using CandidateBrowserCleanArch.Identity.Services.Auth;
+using System.Reflection;
 
 namespace CandidateBrowserCleanArch.Identity;
 
@@ -64,7 +67,9 @@ public static class IdentityServicesRegistration
         services.AddTransient<IExternalAuthProvidersValidator, ExternalAuthProvidersValidator>();
         services.AddTransient<IGoogleAuthHelper, GoogleAuthHelper>();
         services.AddTransient<IEncryptService, EncryptService>();
+        services.AddTransient<IUserRepository, UserService>();
 
+        services.AddAutoMapper(Assembly.GetExecutingAssembly());
 
         services.ConfigureAuthentication(configuration);
 

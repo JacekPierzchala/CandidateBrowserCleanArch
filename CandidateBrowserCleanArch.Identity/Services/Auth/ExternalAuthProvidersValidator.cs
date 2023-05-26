@@ -1,6 +1,7 @@
-﻿using Google.Apis.Auth;
+﻿using CandidateBrowserCleanArch.Identity.Interfaces;
+using Google.Apis.Auth;
 
-namespace CandidateBrowserCleanArch.Identity;
+namespace CandidateBrowserCleanArch.Identity.Services.Auth;
 
 internal class ExternalAuthProvidersValidator : IExternalAuthProvidersValidator
 {
@@ -10,7 +11,7 @@ internal class ExternalAuthProvidersValidator : IExternalAuthProvidersValidator
         if (!payload.EmailVerified
             && DateTime.MinValue.AddSeconds((double)payload.ExpirationTimeSeconds) > DateTime.UtcNow)
         {
-            return (null,"Invalid google token");
+            return (null, "Invalid google token");
         }
         var user = new ApplicationUser
         {

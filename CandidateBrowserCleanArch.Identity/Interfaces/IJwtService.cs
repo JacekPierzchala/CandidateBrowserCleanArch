@@ -1,6 +1,6 @@
 ﻿using System.Security.Claims;
 
-namespace CandidateBrowserCleanArch.Identity;
+namespace CandidateBrowserCleanArch.Identity.Interfaces;
 
 public interface IJwtService
 {

@@ -41,15 +41,5 @@ internal sealed class UnitOfWork : IUnitOfWork
     {
         var userName = _httpContextAccessor.HttpContext.User.FindFirst(CustomClaimTypes.Uid)?.Value;
         return await _dbContext.SaveChangesAsync(userName);
-        //try
-        //{
-        //    await _dbContext.SaveChangesAsync();
-        //    return true;
-        //}
-        //catch 
-        //{
-        //    return false;
-        //}
-
     }
 }
