@@ -16,6 +16,6 @@ namespace CandidateBrowserCleanArch.Domain
         public ICollection<Role> Roles { get; set; } = new List<Role>();
         public string RoleNames { get; set; }
         public DateTime DateRegistered { get; set; } 
-        public DateTime DateLogged { get; set; }
+        public DateTime? DateLogged { get; set; }
     }
 }

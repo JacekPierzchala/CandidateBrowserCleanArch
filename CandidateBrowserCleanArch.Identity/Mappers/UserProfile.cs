@@ -13,7 +13,8 @@ namespace CandidateBrowserCleanArch.Identity.Mappers
     {
         public UserProfile()
         {
-            CreateMap<ApplicationUser,User>().ReverseMap();
+            CreateMap<ApplicationUser,User>()
+                .ReverseMap();
             CreateMap<IdentityRole, Role>().ReverseMap();
         }
     }

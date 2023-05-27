@@ -13,7 +13,7 @@ namespace CandidateBrowserCleanArch.Application.Test
 
         protected void initMapper()
         {
-            var mapperConfig = new MapperConfiguration(c => c.AddProfile<MappingProfile>());
+            var mapperConfig = new MapperConfiguration(c => c.AddProfile<CandidateProfile>());
             _mapper = mapperConfig.CreateMapper();
         }
     }

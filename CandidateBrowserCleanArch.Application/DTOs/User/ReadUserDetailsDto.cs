@@ -10,6 +10,6 @@ namespace CandidateBrowserCleanArch.Application;
 public class ReadUserDetailsDto:ReadUserListDto
 {
     public DateTime DateRegistered { get; set; }
-    public DateTime DateLogged { get; set; }
+    public DateTime? DateLogged { get; set; }
     public ICollection<RoleDto> Roles { get; set; } = new List<RoleDto>();
 }
