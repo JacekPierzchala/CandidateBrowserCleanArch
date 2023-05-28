@@ -24,14 +24,19 @@ internal class UserService : IUserRepository
         _roleManager = roleManager;
         _mapper = mapper;
     }
-    public async Task<User> GetUser(string userId)
+    public async Task<User?> GetUserWithDetails(string userId)
     {
+        User? user=null;
         var roles=await _roleManager.Roles.ToListAsync();
         var userDb=await _userManager.FindByIdAsync(userId);
-        var roleNames = await _userManager.GetRolesAsync(userDb);
-        var user = _mapper.Map<User>(userDb);
-        user.RoleNames = string.Join(", ", roleNames);
-        user.Roles = _mapper.Map<ICollection<Role>>(roles.Where(c => roleNames.Contains(c.Name)).ToList());
+        if (userDb!=null) 
+        {
+            var roleNames = await _userManager.GetRolesAsync(userDb);
+            user = _mapper.Map<User>(userDb);
+            user.RoleNames = string.Join(", ", roleNames);
+            user.Roles = _mapper.Map<ICollection<Role>>(roles.Where(c => roleNames.Contains(c.Name)).ToList());
+            
+        }
         return user;
     }
 
@@ -50,5 +55,16 @@ internal class UserService : IUserRepository
     public async Task<User> UpdateUser(User user)
     {
         throw new NotImplementedException();
+    }
+
+    public async Task<User> GetUser(string userId)
+    {
+        User? user = null;
+        var userDb = await _userManager.FindByIdAsync(userId);
+        if (userDb != null)
+        {
+            user = _mapper.Map<User>(userDb);
+        }
+        return user;
     }
 }

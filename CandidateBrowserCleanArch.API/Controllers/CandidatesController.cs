@@ -42,6 +42,14 @@ namespace CandidateBrowserCleanArch.API.Controllers
             return Ok(response);         
         }
 
+        [HttpGet("admin/{id}")]
+        [Authorize(Policy = CustomRoleClaims.CandidateRead)]
+        public async Task<ActionResult<ServiceReponse<CandidateDetailsForAdminDto>>> GetCandidateDetailsForAdmin(int id)
+        {
+            var response = await _mediator.Send(new GetCandidateDetailsForAdminRequest { CandidateId = id });
+            return Ok(response);
+        }
+
         [HttpPost]
         [Authorize(Policy = CustomRoleClaims.CandidateCreate)]
         public async Task<ActionResult<ServiceReponse<CandidateDetailsDto>>> CreateCandidate([FromBody] CandidateCreateDto createCandidate)

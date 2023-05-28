@@ -6,5 +6,6 @@ public interface ICandidateRepository: IGenericRepository<Candidate>
 {
     Task<PagedResultResponse<Candidate>> GetAllActiveCandidatesWithDetailsAsync(CandidateQueryParameters QueryParameters);
     Task<Candidate> GetCandidateWithDetailsAsync(int id);
+
     Task DeleteCandidateAsync(int id);
 }

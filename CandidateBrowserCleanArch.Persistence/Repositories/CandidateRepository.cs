@@ -51,7 +51,8 @@ public class CandidateRepository : GenericRepository<Candidate>, ICandidateRepos
             TotalCount = totalItems.Count()
         };
      }
-    
+
+
 
     public async Task<Candidate> GetCandidateWithDetailsAsync(int id)
     {

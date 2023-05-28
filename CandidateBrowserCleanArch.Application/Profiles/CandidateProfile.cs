@@ -15,6 +15,8 @@ public class CandidateProfile : Profile
 
         CreateMap<Candidate, CandidateDetailsDto>()
             .ReverseMap();
+        CreateMap<Candidate, CandidateDetailsForAdminDto>()
+            .ReverseMap();
         CreateMap<Candidate, CandidateCreateDto>()
             .ReverseMap();
         CreateMap<Candidate, CandidateUpdateDto>()

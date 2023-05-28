@@ -28,7 +28,7 @@ public class GetUserDetailsRequestHandler : IRequestHandler<GetUserDetailsReques
     public async Task<ServiceReponse<ReadUserDetailsDto>> Handle(GetUserDetailsRequest request, CancellationToken cancellationToken)
     {
         var response=new ServiceReponse<ReadUserDetailsDto>();
-        var userDb=await _userRepository.GetUser(request.UserId);
+        var userDb=await _userRepository.GetUserWithDetails(request.UserId);
         if (userDb==null) 
         { 
             throw new NotFoundException(nameof(User),request.UserId);   

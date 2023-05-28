@@ -1,4 +1,6 @@
 ﻿
+using System.ComponentModel.DataAnnotations.Schema;
+
 namespace CandidateBrowserCleanArch.Application;
 
 public class CandidateDetailsDto:BaseDto
