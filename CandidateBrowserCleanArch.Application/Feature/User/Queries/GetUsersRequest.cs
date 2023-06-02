@@ -29,9 +29,7 @@ public class GetUsersRequestHandler : IRequestHandler<GetUsersRequest, ServiceRe
         var dbData = await _userRepository.GetUsersAsync();
         response.Data=_mapper.Map<IEnumerable<ReadUserListDto>>(dbData); 
         response.Success= true;
-
         return response;
-        
-
+      
     }
 }

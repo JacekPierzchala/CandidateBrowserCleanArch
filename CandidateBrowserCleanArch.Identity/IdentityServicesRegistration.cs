@@ -68,6 +68,7 @@ public static class IdentityServicesRegistration
         services.AddTransient<IGoogleAuthHelper, GoogleAuthHelper>();
         services.AddTransient<IEncryptService, EncryptService>();
         services.AddTransient<IUserRepository, UserService>();
+        services.AddTransient<IRoleRepository, RoleService>();
 
         services.AddAutoMapper(Assembly.GetExecutingAssembly());
 

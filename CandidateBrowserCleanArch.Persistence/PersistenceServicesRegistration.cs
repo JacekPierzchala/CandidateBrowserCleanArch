@@ -5,6 +5,8 @@ using Microsoft.Extensions.Caching.Memory;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
+using Microsoft.Extensions.Logging;
+using Serilog;
 using System;
 
 namespace CandidateBrowserCleanArch.Persistence;
@@ -27,7 +29,12 @@ public static class PersistenceServicesRegistration
         services.AddMemoryCache();
 
         services.AddDbContext<CandidatesBrowserDbContext>(options =>
-        options.UseSqlServer(connString));
+        options.UseSqlServer(connString)
+                .UseLoggerFactory(LoggerFactory.Create(builder =>
+                {
+                    builder.AddSerilog();
+                })));
+            
         services.AddScoped(typeof(IGenericRepository<>), typeof(GenericRepository<>));
 
         services.AddScoped<CandidateRepository>();      
