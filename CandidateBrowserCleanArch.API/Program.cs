@@ -4,6 +4,7 @@ using CandidateBrowserCleanArch.Application;
 using CandidateBrowserCleanArch.Identity;
 using CandidateBrowserCleanArch.Infrastructure;
 using CandidateBrowserCleanArch.Persistence;
+using Microsoft.Extensions.Caching.Memory;
 using Serilog;
 using Azure.Identity;
 using Azure;
