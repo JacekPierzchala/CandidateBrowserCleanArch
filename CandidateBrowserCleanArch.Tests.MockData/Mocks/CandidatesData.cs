@@ -28,6 +28,7 @@ namespace CandidateBrowserCleanArch.Tests.MockData.Mocks
                              CandidateId= 1,
                              CompanyId= 1,
                              Company =CompaniesData.Companies().FirstOrDefault(c=>c.Id==1),
+                             DateStart= DateTime.Now,
                         },
                         new CandidateCompany
                         {
@@ -35,6 +36,7 @@ namespace CandidateBrowserCleanArch.Tests.MockData.Mocks
                              CandidateId= 1,
                              CompanyId= 2,
                              Company =CompaniesData.Companies().FirstOrDefault(c=>c.Id==2),
+                             DateStart= DateTime.Now,
                         }
                    },
                    Projects= new List<CandidateProject>
@@ -45,6 +47,7 @@ namespace CandidateBrowserCleanArch.Tests.MockData.Mocks
                              CandidateId= 1,
                              ProjectId=1,
                              Project =ProjectsData.Projects().FirstOrDefault(c=>c.Id==1),
+                        
                        },
                        new CandidateProject
                        {
@@ -69,6 +72,7 @@ namespace CandidateBrowserCleanArch.Tests.MockData.Mocks
                              CandidateId= 2,
                              CompanyId= 5,
                              Company =CompaniesData.Companies().FirstOrDefault(c=>c.Id==5),
+                             DateStart= DateTime.Now,
                         },
                         new CandidateCompany
                         {
@@ -76,6 +80,7 @@ namespace CandidateBrowserCleanArch.Tests.MockData.Mocks
                              CandidateId= 2,
                              CompanyId= 3,
                              Company =CompaniesData.Companies().FirstOrDefault(c=>c.Id==3),
+                             DateStart= DateTime.Now,
                         }
                    },
                    Projects= new List<CandidateProject>
@@ -86,6 +91,7 @@ namespace CandidateBrowserCleanArch.Tests.MockData.Mocks
                              CandidateId= 1,
                              ProjectId=3,
                              Project =ProjectsData.Projects().FirstOrDefault(c=>c.Id==3),
+                            
                        }
 
                    }

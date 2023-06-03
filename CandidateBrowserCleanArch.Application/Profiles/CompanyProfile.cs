@@ -10,6 +10,7 @@ public class CompanyProfile : Profile
         CreateMap<Company, ReadCompanyDto>()
         .ReverseMap();
 
+
         CreateMap<CandidateCompany, CandidateCompanyDto>()
         .ForMember(cc => cc.Company, c => c.MapFrom(map => map.Company))
         .ReverseMap();

@@ -2,7 +2,7 @@
 namespace CandidateBrowserCleanArch.Persistence.IntegrationTests;
 
 [TestClass]
-public class CandidatesBrowserDbContextTests: CandidatesBaseData
+public sealed class CandidatesBrowserDbContextTests: CandidatesBaseData
 {
    
     public CandidatesBrowserDbContextTests()

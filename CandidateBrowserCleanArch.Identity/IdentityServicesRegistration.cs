@@ -18,6 +18,7 @@ using Microsoft.Extensions.Hosting;
 using CandidateBrowserCleanArch.Identity.Interfaces;
 using CandidateBrowserCleanArch.Identity.Services.Auth;
 using System.Reflection;
+using Microsoft.Extensions.Caching.Memory;
 
 namespace CandidateBrowserCleanArch.Identity;
 
@@ -54,6 +55,9 @@ public static class IdentityServicesRegistration
         .AddTokenProvider<EmailConfirmationTokenProvider<ApplicationUser>>("emailconfirmation")
         .AddTokenProvider<PasswordResetTokenProvider<ApplicationUser>>("passwordchange");
 
+        services.AddMemoryCache();
+
+
         services.Configure<DataProtectionTokenProviderOptions>(opt =>
         opt.TokenLifespan = TimeSpan.FromHours(2));
         services.Configure<EmailConfirmationTokenProviderOptions>(opt =>
@@ -68,7 +72,14 @@ public static class IdentityServicesRegistration
         services.AddTransient<IGoogleAuthHelper, GoogleAuthHelper>();
         services.AddTransient<IEncryptService, EncryptService>();
         services.AddTransient<IUserRepository, UserService>();
-        services.AddTransient<IRoleRepository, RoleService>();
+
+        services.AddScoped<RoleService>();
+        services.AddScoped<IRoleRepository>(provider => 
+        { 
+            return new RoleCachedService(provider.GetService<RoleService>(),
+                provider.GetService<IMemoryCache>());
+        
+        });
 
         services.AddAutoMapper(Assembly.GetExecutingAssembly());
 

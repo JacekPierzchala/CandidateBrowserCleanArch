@@ -36,14 +36,14 @@ public static class PersistenceServicesRegistration
                 })));
             
         services.AddScoped(typeof(IGenericRepository<>), typeof(GenericRepository<>));
-
-        services.AddScoped<CandidateRepository>();      
-        services.AddScoped<ICandidateRepository>(provider =>
-        {
-            return new CandidateCachedRepository(
-                provider.GetService<CandidatesBrowserDbContext>()!,
-                provider.GetService<CandidateRepository>()!, provider.GetService<IMemoryCache>()!);
-        });
+        services.AddScoped<ICandidateRepository,CandidateRepository>();
+        //services.AddScoped<CandidateRepository>();      
+        //services.AddScoped<ICandidateRepository>(provider =>
+        //{
+        //    return new CandidateCachedRepository(
+        //        provider.GetService<CandidatesBrowserDbContext>()!,
+        //        provider.GetService<CandidateRepository>()!, provider.GetService<IMemoryCache>()!);
+        //});
 
         services.AddScoped<CompanyRepository>();
         services.AddScoped<ICompanyRepository>(provider => 

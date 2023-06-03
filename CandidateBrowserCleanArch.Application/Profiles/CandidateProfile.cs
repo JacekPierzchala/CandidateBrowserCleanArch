@@ -21,5 +21,9 @@ public class CandidateProfile : Profile
             .ReverseMap();
         CreateMap<Candidate, CandidateUpdateDto>()
             .ReverseMap();
+
+
+
+
     }
 }

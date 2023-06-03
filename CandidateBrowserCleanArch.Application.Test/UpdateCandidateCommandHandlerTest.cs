@@ -32,10 +32,11 @@ namespace CandidateBrowserCleanArch.Application.Test
             {
 
                 Id = request.Id,
-                DateOfBirth = DateTime.Now,
+                DateOfBirth = DateTime.Now.AddYears(-20),
                 FirstName = "John",
                 LastName = "Doe",
                 Email = "John.Doe@gmail.com",
+
 
             };
             _handler = new(_mapper,_unitOfWork.Object, _pictureStorageServiceMock.Object);
@@ -105,7 +106,7 @@ namespace CandidateBrowserCleanArch.Application.Test
             request.CandidateUpdate = new CandidateUpdateDto
             {
                 Id = request.Id,
-                DateOfBirth = DateTime.Now,
+                DateOfBirth = DateTime.Now.AddYears(-20),
                 FirstName = "John",
                 LastName = "Johnson",
                 Email = "John.Johnsom@gmail.com",

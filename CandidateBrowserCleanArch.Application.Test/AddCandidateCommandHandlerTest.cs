@@ -33,7 +33,7 @@ namespace CandidateBrowserCleanArch.Application.Test
 
             request.CreateCandidateDto = new()
             {
-                DateOfBirth = DateTime.Now,
+                DateOfBirth = DateTime.Now.AddYears(-20),
                 FirstName = "John",
                 LastName = "Doe",
                 Email = "John.Doe@gmail.com",
