@@ -19,7 +19,7 @@ namespace CandidateBrowserCleanArch.API.Controllers
         }
 
         [HttpGet]
-        public async Task<ActionResult<ServiceReponse<RoleDto>>>GetRoles()
+        public async Task<ActionResult<ServiceReponse<IEnumerable<RoleDto>>>>GetRoles()
         {
             var response = await _mediator.Send(new GetRolesRequest());
             return Ok(response);

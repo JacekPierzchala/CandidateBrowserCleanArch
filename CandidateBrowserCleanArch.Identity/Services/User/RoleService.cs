@@ -22,6 +22,13 @@ internal class RoleService : IRoleRepository
         _roleManager = roleManager;
         _mapper = mapper;
     }
+
+    public async Task<Role> GetRoleByIdAsync(string id)
+    {
+        var role = await _roleManager.FindByIdAsync(id);
+        return _mapper.Map<Role>(role);
+    }
+
     public async Task<IEnumerable<Role>> GetRolesAsync()
     {
         var roles = await _roleManager.Roles.ToListAsync();

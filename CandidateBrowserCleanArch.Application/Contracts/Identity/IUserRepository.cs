@@ -10,7 +10,7 @@ namespace CandidateBrowserCleanArch.Application;
 public interface IUserRepository
 {
     Task<IEnumerable<User>>GetUsersAsync();
-    Task<User>UpdateUser(User user);
+    Task<(bool result,string message)> UpdateUser(User user);
     Task<User> GetUserWithDetails(string userId);
     Task<User> GetUser(string userId);
 }

@@ -32,5 +32,13 @@ namespace CandidateBrowserCleanArch.API.Controllers
             var response = await _mediator.Send(new GetUserDetailsRequest {  UserId=userId});
             return Ok(response);
         }
+
+        [Authorize(Policy = CustomRoleClaims.UserUpdate)]
+        [HttpPut("{userId}")]
+        public async Task<ActionResult<ServiceReponse<bool>>> UpdateUser(string userId, [FromBody] UpdateUserDto updateUser)
+        {
+            var response = await _mediator.Send(new UpdateUserRequest { UserId = userId, UpdateUser=updateUser });
+            return Ok(response);
+        }
     }
 }

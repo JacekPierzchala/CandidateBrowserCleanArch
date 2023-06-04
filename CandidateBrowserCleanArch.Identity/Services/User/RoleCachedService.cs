@@ -14,6 +14,19 @@ internal class RoleCachedService : IRoleRepository
         _decorated = decorated;
         _memoryCache = memoryCache;
     }
+
+    public async Task<Role> GetRoleByIdAsync(string id)
+    {
+        string key = $"role:{id}";
+        return await _memoryCache.GetOrCreateAsync(
+            key,
+            async entry =>
+            {
+                entry.SetAbsoluteExpiration(TimeSpan.FromMinutes(2));
+                return await _decorated.GetRoleByIdAsync(id);
+            });
+    }
+
     public async Task<IEnumerable<Role>> GetRolesAsync()
     {
 
