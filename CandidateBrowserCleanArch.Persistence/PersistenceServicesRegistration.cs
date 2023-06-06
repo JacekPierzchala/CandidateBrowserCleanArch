@@ -37,13 +37,7 @@ public static class PersistenceServicesRegistration
             
         services.AddScoped(typeof(IGenericRepository<>), typeof(GenericRepository<>));
         services.AddScoped<ICandidateRepository,CandidateRepository>();
-        //services.AddScoped<CandidateRepository>();      
-        //services.AddScoped<ICandidateRepository>(provider =>
-        //{
-        //    return new CandidateCachedRepository(
-        //        provider.GetService<CandidatesBrowserDbContext>()!,
-        //        provider.GetService<CandidateRepository>()!, provider.GetService<IMemoryCache>()!);
-        //});
+
 
         services.AddScoped<CompanyRepository>();
         services.AddScoped<ICompanyRepository>(provider => 
@@ -64,6 +58,18 @@ public static class PersistenceServicesRegistration
 
         services.AddScoped<ICandidateCompanyRepository, CandidateCompanyRepository>();
         services.AddScoped<ICandidateProjectRepository, CandidateProjectRepository>();
+
+        services.AddScoped<ConfigThemeRepository>();
+        services.AddScoped<IConfigThemeRepository>(provider => 
+        {
+            return new ConfigThemeCachedRepository(
+                provider.GetService<CandidatesBrowserDbContext>()!,
+                provider.GetService<ConfigThemeRepository>()!,
+                provider.GetService<IMemoryCache>()!);
+        
+        });
+
+        services.AddScoped<IUserSettingsRepository, UserSettingsRepository>();
         services.AddScoped<IUnitOfWork, UnitOfWork>();
         return services;
     

@@ -14,5 +14,7 @@ public interface IUnitOfWork:IDisposable
     
     ICandidateCompanyRepository CandidateCompanyRepository { get; }
     ICandidateProjectRepository CandidateProjectRepository { get; }
+    IUserSettingsRepository UserSettingsRepository { get; }
+    IConfigThemeRepository ConfigThemeRepository { get; }
     Task<bool> SaveAsync();
 }

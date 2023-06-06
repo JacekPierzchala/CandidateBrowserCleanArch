@@ -1,4 +1,6 @@
 ﻿
+using CandidateBrowserCleanArch.Domain;
+
 namespace CandidateBrowserCleanArch.Persistence.IntegrationTests;
 
 [TestClass]

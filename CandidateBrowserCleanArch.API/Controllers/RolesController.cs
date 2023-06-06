@@ -1,13 +1,14 @@
-﻿using CandidateBrowserCleanArch.Application;
+﻿using CandidateBrowserCleanArch.API.Configurations;
+using CandidateBrowserCleanArch.Application;
 using MediatR;
 using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 
 namespace CandidateBrowserCleanArch.API.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
+    [ApiVersion(ApiVersionNumber.V1_0)]
     [Authorize(Policy =CustomRoleClaims.UserUpdate)]
     public class RolesController : ControllerBase
     {

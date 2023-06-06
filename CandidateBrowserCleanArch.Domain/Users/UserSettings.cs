@@ -6,8 +6,9 @@ using System.Threading.Tasks;
 
 namespace CandidateBrowserCleanArch.Domain;
 
-public abstract class BaseEntity
+public class UserSettings:BaseEntity
 {
-    public int Id { get; set; }
-    public bool Deleted { get; set; }
+    public ConfigTheme ConfigTheme { get; set; }
+    public int ConfigThemeId { get; set; }
+    public string UserId { get; set; }
 }

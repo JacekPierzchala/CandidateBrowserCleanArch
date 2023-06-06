@@ -2,7 +2,7 @@
 
 namespace CandidateBrowserCleanArch.Domain;
 
-public class Candidate:BaseEntity,IAuditableEntity
+public class Candidate : BaseEntity, IAuditableEntity
 {
     [Column(TypeName = "nvarchar(150)")]
     public string? FirstName { get; set; }

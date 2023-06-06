@@ -2,7 +2,7 @@
 
 namespace CandidateBrowserCleanArch.Domain;
 
-public class Project:BaseEntity
+public class Project : BaseEntity
 {
     [Column(TypeName = "varchar(250)")]
     public string? ProjectName { get; set; }

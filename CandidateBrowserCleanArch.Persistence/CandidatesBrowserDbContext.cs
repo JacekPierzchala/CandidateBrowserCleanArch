@@ -23,4 +23,6 @@ public class CandidatesBrowserDbContext : AuditableDbContext
     public DbSet<Company> Companies { get; set; }
     public DbSet<CandidateCompany> CandidateCompanies { get; set; }
     public DbSet<CandidateProject> CandidateProjects { get; set; }
+    public DbSet<ConfigTheme> ConfigThemes { get; set; }
+    public DbSet<UserSettings> UserSettings { get; set; }
 }

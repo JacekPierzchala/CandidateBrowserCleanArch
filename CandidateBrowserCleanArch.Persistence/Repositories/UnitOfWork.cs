@@ -17,6 +17,8 @@ internal sealed class UnitOfWork : IUnitOfWork
     private readonly IProjectRepository _projectRepository;
     private readonly ICandidateCompanyRepository _candidateCompanyRepository;
     private readonly ICandidateProjectRepository _candidateProjectRepository;
+    private readonly IUserSettingsRepository _userSettingsRepository;
+    private readonly IConfigThemeRepository _configThemeRepository;
 
     public UnitOfWork(CandidatesBrowserDbContext dbContext,
         IHttpContextAccessor httpContextAccessor)
@@ -30,7 +32,9 @@ internal sealed class UnitOfWork : IUnitOfWork
 
     public IProjectRepository ProjectRepository => _projectRepository?? new ProjectRepository(_dbContext);  
     public ICandidateCompanyRepository CandidateCompanyRepository => _candidateCompanyRepository ?? new CandidateCompanyRepository(_dbContext);  
-    public ICandidateProjectRepository CandidateProjectRepository => _candidateProjectRepository ?? new CandidateProjectRepository(_dbContext);  
+    public ICandidateProjectRepository CandidateProjectRepository => _candidateProjectRepository ?? new CandidateProjectRepository(_dbContext);
+    public IUserSettingsRepository UserSettingsRepository => _userSettingsRepository ?? new UserSettingsRepository(_dbContext);
+    public IConfigThemeRepository ConfigThemeRepository => _configThemeRepository ?? new ConfigThemeRepository(_dbContext);
 
     public void Dispose()
     {

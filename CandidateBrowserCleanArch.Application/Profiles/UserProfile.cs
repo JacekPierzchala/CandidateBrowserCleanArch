@@ -15,5 +15,11 @@ public class UserProfile : Profile
         .ReverseMap();
         CreateMap<Role, RoleDto>()
         .ReverseMap();
+
+        CreateMap<ConfigTheme, ConfigThemeDto>()
+        .ReverseMap();
+
+        CreateMap<UserSettings, UserSettingsDto>()
+        .ReverseMap();
     }
 }

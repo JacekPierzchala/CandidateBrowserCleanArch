@@ -1,4 +1,5 @@
-﻿using CandidateBrowserCleanArch.Application;
+﻿using CandidateBrowserCleanArch.API.Configurations;
+using CandidateBrowserCleanArch.Application;
 using MediatR;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -7,6 +8,7 @@ namespace CandidateBrowserCleanArch.API.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
+    [ApiVersion(ApiVersionNumber.V1_0)]
     public class CandidateProjectController : ControllerBase
     {
         private readonly IMediator _mediator;

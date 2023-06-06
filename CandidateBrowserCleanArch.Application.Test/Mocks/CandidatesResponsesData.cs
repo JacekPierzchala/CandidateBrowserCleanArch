@@ -1,10 +1,10 @@
-﻿using CandidateBrowserCleanArch.Domain;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using CandidateBrowserCleanArch.Tests.MockData.Mocks;
+using CandidateBrowserCleanArch.Domain;
 
 namespace CandidateBrowserCleanArch.Application.Test;
 

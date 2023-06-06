@@ -4,6 +4,7 @@ using CandidateBrowserCleanArch.Persistence;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace CandidateBrowserCleanArch.Persistence.Migrations
 {
     [DbContext(typeof(CandidatesBrowserDbContext))]
-    partial class CandidatesBrowserDbContextModelSnapshot : ModelSnapshot
+    [Migration("20230605163714_AddedUserSettings")]
+    partial class AddedUserSettings
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
