@@ -1,6 +1,7 @@
 ﻿using CandidateBrowserCleanArch.Application;
 using CandidateBrowserCleanArch.Identity.Helpers;
 using CandidateBrowserCleanArch.Identity.Interfaces;
+using System.Security.Claims;
 
 namespace CandidateBrowserCleanArch.Identity.Services.Auth;
 
@@ -82,7 +83,8 @@ internal class AuthService : IAuthService
         var response = new AuthResponse();
 
         var principal = _jwtService.GetPrincipalFromExpiredToken(request.Token);
-        var validationRequest = await _userServicesManager.ValidateUserAndToken(principal.Identity.Name, request.RefreshToken);
+        var validationRequest = await _userServicesManager.ValidateUserAndToken(principal.Claims.FirstOrDefault(c => c.Type == ClaimTypes.NameIdentifier)?.Value,
+            request.RefreshToken);
         if (validationRequest.user == null)
         {
             response.Message = validationRequest.validationMessage;
