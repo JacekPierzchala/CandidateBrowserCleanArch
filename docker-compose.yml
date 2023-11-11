@@ -1,0 +1,8 @@
+version: '3.4'
+
+services:
+  candidatebrowsercleanarch.api:
+    image: ${DOCKER_REGISTRY-}candidatebrowsercleanarchapi
+    build:
+      context: .
+      dockerfile: CandidateBrowserCleanArch.API/Dockerfile

@@ -33,6 +33,8 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CandidateBrowserCleanArch.I
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CandidateBrowserCleanArch.Tests.MockData", "CandidateBrowserCleanArch.Tests.MockData\CandidateBrowserCleanArch.Tests.MockData.csproj", "{1F82C3D1-225B-4F82-B80D-7C186CDFFDD4}"
 EndProject
+Project("{E53339B2-1760-4266-BCC7-CA923CBCF16C}") = "docker-compose", "docker-compose.dcproj", "{DDDCEA8D-171E-40CD-BDB0-C5BF7E54FE5B}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -75,6 +77,10 @@ Global
 		{1F82C3D1-225B-4F82-B80D-7C186CDFFDD4}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{1F82C3D1-225B-4F82-B80D-7C186CDFFDD4}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{1F82C3D1-225B-4F82-B80D-7C186CDFFDD4}.Release|Any CPU.Build.0 = Release|Any CPU
+		{DDDCEA8D-171E-40CD-BDB0-C5BF7E54FE5B}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{DDDCEA8D-171E-40CD-BDB0-C5BF7E54FE5B}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{DDDCEA8D-171E-40CD-BDB0-C5BF7E54FE5B}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{DDDCEA8D-171E-40CD-BDB0-C5BF7E54FE5B}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

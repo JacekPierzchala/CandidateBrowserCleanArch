@@ -50,11 +50,11 @@ app.UseMiddleware<ExceptionMiddleware>();
 app.UseAuthentication();
 // Configure the HTTP request pipeline.
 
-if (app.Environment.IsDevelopment())
-{
+//if (app.Environment.IsDevelopment())
+//{
     app.UseSwagger();
     SwaggerExtensions.ConfigureSwaggerUI(app);
-}
+//}
 app.UseSerilogRequestLogging();
 app.UseHttpsRedirection();
 app.UseCors("AllowAll");
